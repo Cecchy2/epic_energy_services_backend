@@ -6,6 +6,7 @@ import epic_team6.buildweek_epic_energy_services.enums.StatoFattura;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.FatturaRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.UpdateStatoFatturaDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.FatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,4 +48,35 @@ public class FatturaService {
         FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), body.clienteId());
         return resp;
     }
+
+    //FIND BY ID AND UPDATE
+    public FatturaRespDTO findByIdAndUpdate(UUID fatturaId, NewFatturaDTO body) {
+        Fattura foundFattura = this.findById(fatturaId);
+
+        Cliente foundCliente = this.clienteService.findById(UUID.fromString(body.clienteId()));
+
+        foundFattura.setDataFattura(body.dataFattura());
+        foundFattura.setNumeroFattura(body.numeroFattura());
+        foundFattura.setImporto(body.importo());
+        foundFattura.setStatoFattura(StatoFattura.valueOf(body.statoFattura()));
+        foundFattura.setCliente(foundCliente);
+
+        this.fatturaRepository.save(foundFattura);
+
+        FatturaRespDTO resp = new FatturaRespDTO(foundFattura.getId(), foundFattura.getDataFattura(), foundFattura.getImporto(), foundFattura.getNumeroFattura(), foundFattura.getStatoFattura(), body.clienteId());
+        return resp;
+    }
+
+    //UPDATE STATO FATTURA
+    public FatturaRespDTO updateStatoFatturaById(UUID fatturaId, UpdateStatoFatturaDTO body) {
+        Fattura foundFattura = this.findById(fatturaId);
+
+        foundFattura.setStatoFattura(StatoFattura.valueOf(body.statoFattura()));
+        this.fatturaRepository.save(foundFattura);
+
+        FatturaRespDTO resp = new FatturaRespDTO(foundFattura.getId(), foundFattura.getDataFattura(), foundFattura.getImporto(), foundFattura.getNumeroFattura(), foundFattura.getStatoFattura(), foundFattura.getCliente().getId().toString());
+        return resp;
+    }
+
+    
 }
