@@ -59,4 +59,11 @@ public class UtentiController {
             return this.utenteService.findByIdAndUpdate(utenteId,body);
         }
     }
+
+    @DeleteMapping("/{dipendenteId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable UUID utenteId){
+        this.utenteService.findByIdAndDeleteUtente(utenteId);
+    }
+
 }

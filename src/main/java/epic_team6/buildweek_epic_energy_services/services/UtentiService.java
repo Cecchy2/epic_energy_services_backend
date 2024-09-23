@@ -49,4 +49,10 @@ public class UtentiService {
         Utente newUtente = new Utente(body.username(), body.email(), body.password(), body.nome(), body.cognome(),avatar) ;
         return utenteRepository.save(newUtente);
     }
+
+    public void findByIdAndDeleteUtente(UUID utenteId){
+        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(()->new NotFoundException(utenteId));
+        if (found == null)throw new NotFoundException(utenteId);
+        this.utenteRepository.delete(found);
+    }
 }
