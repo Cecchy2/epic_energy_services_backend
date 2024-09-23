@@ -3,8 +3,8 @@ package epic_team6.buildweek_epic_energy_services.services;
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
-import epic_team6.buildweek_epic_energy_services.payloads.ClientePayloadDTO;
-import epic_team6.buildweek_epic_energy_services.repositories.ClienteRepository;
+import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
+import epic_team6.buildweek_epic_energy_services.repositories.ClientiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,16 +13,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ClienteService {
+public class ClientiService {
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClientiRepository clienteRepository;
 
 
-    public Cliente salvaCliente(ClientePayloadDTO body) {
+    public Cliente salvaCliente(ClientiPayloadDTO body) {
         if (clienteRepository.existsByEmail(body.email()) || clienteRepository.existsByPartitaIva(body.partitaIva())){
             throw new BadRequestException("Il cliente è già registrato");
         }

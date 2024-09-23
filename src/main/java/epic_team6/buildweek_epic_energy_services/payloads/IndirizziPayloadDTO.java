@@ -3,9 +3,7 @@ package epic_team6.buildweek_epic_energy_services.payloads;
 
 import jakarta.validation.constraints.*;
 
-import java.util.UUID;
-
-public record IndirizzoDTO(
+public record IndirizziPayloadDTO(
         @NotEmpty(message = "via obbligatoria")
         @Size(min = 10, max = 40, message = "inserisci da 10 a massimo 40 caratteri")
         String via,

@@ -2,7 +2,7 @@ package epic_team6.buildweek_epic_energy_services.services;
 
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
-import epic_team6.buildweek_epic_energy_services.repositories.ProvincieRepository;
+import epic_team6.buildweek_epic_energy_services.repositories.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 public class ProvinceService {
     @Autowired
-    private ProvincieRepository provincieRepository;
+    private ProvinceRepository provincieRepository;
 
 
     public List<Provincia> saveAll(List<Provincia> province) {

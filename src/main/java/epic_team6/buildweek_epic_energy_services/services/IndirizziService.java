@@ -3,9 +3,9 @@ package epic_team6.buildweek_epic_energy_services.services;
 import epic_team6.buildweek_epic_energy_services.entities.Comune;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
-import epic_team6.buildweek_epic_energy_services.payloads.IndirizzoDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.IndirizziPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizziResponsDTO;
-import epic_team6.buildweek_epic_energy_services.repositories.IndirizzoRepository;
+import epic_team6.buildweek_epic_energy_services.repositories.IndirizziRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class IndirizzoService {
+public class IndirizziService {
     @Autowired
-    private IndirizzoRepository indirizzoRepository;
+    private IndirizziRepository indirizzoRepository;
     @Autowired
     private ComuniService comuniService;
     @Autowired
     private ProvinceService provinceService;
 
 
-    public IndirizziResponsDTO creaIndirizzo(IndirizzoDTO body){
+    public IndirizziResponsDTO creaIndirizzo(IndirizziPayloadDTO body){
         Comune comune = this.comuniService.findById(UUID.fromString(body.comune_id()));
         Provincia provincia = this.provinceService.findById(UUID.fromString(body.provincia_id()));
 

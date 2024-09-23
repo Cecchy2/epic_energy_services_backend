@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
+public interface ClientiRepository extends JpaRepository<Cliente, UUID> {
     boolean existsByEmail(String email);
 
     boolean existsByPartitaIva (String partitaIva);

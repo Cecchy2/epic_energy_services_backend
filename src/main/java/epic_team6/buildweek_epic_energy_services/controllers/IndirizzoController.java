@@ -2,9 +2,9 @@ package epic_team6.buildweek_epic_energy_services.controllers;
 
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
-import epic_team6.buildweek_epic_energy_services.payloads.IndirizzoDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.IndirizziPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizziResponsDTO;
-import epic_team6.buildweek_epic_energy_services.services.IndirizzoService;
+import epic_team6.buildweek_epic_energy_services.services.IndirizziService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/indirizzi")
 public class IndirizzoController {
     @Autowired
-    private IndirizzoService indirizzoService;
+    private IndirizziService indirizzoService;
 
     @GetMapping
     public Page<Indirizzo> findAll(@RequestParam(defaultValue = "0") int page,
@@ -29,7 +29,7 @@ public class IndirizzoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public IndirizziResponsDTO save(@RequestBody @Validated IndirizzoDTO body, BindingResult validationResult) {
+    public IndirizziResponsDTO save(@RequestBody @Validated IndirizziPayloadDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()){
             String message = validationResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(" ."));
             throw new BadRequestException("Errore nel payload " + message);
@@ -39,19 +39,4 @@ public class IndirizzoController {
     }
     }
 
-    /*@GetMapping("/{indirizzoId}")
-    public Indirizzo findById(@PathVariable UUID indirizzoId) {
-        return this.findById(indirizzoId);
-    }
-
-    @PutMapping("/{indirizzoId}")
-    public Indirizzo findByIdAndUpdate(@PathVariable UUID indirizzoId, @RequestBody Indirizzo body) {
-        return this.indirizzoService.findByIdAndUpdate(indirizzoId, body);
-    }
-
-    @DeleteMapping("/{indirizzoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable UUID indirizzoId) {
-        this.indirizzoService.findByIdAndDelete(indirizzoId);
-    }*/
 

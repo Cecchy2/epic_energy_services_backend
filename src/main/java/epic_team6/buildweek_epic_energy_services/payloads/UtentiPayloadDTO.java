@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public record UtentePayloadDTO(
+public record UtentiPayloadDTO(
         @NotEmpty(message = "Devi inserire uno username")
         @Size(min = 3, max = 20, message = "Lo username deve avere dai 3 ai 20 caratteri")
         String username,

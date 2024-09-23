@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/province")
-public class ProvincieController {
+public class ProvinceController {
     @Autowired
     private ProvinceService provinceService;
 

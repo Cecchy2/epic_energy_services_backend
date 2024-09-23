@@ -5,7 +5,7 @@ import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ClientePayloadDTO(
+public record ClientiPayloadDTO(
         String ragioneSociale,
         String partitaIva,
         String email,
