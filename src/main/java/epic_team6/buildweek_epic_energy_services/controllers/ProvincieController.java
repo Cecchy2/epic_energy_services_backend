@@ -4,7 +4,7 @@ import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
-import epic_team6.buildweek_epic_energy_services.services.ProvincieService;
+import epic_team6.buildweek_epic_energy_services.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/province")
 public class ProvincieController {
     @Autowired
-    private ProvincieService provinceService;
+    private ProvinceService provinceService;
 
     @PostMapping("/upload")
     public String uploadData(@RequestParam("file")MultipartFile file) throws Exception{
