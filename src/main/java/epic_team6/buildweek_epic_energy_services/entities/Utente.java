@@ -21,7 +21,7 @@ public class Utente {
     private String email;
     private String password;
     private String nome;
-    private String congome;
+    private String cognome;
     private String avatar;
     @Enumerated(EnumType.STRING)
     private RuoloUtente ruolo;
@@ -31,7 +31,7 @@ public class Utente {
         this.email = email;
         this.password = password;
         this.nome = nome;
-        this.congome = congome;
+        this.cognome = congome;
         this.avatar = avatar;
         this.ruolo = RuoloUtente.USER;
     }
