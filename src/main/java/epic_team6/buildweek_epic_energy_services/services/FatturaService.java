@@ -42,10 +42,10 @@ public class FatturaService {
     //SAVE DI UNA FATTURA
     public FatturaRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
-        Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), StatoFattura.valueOf(body.statoFattura()), foundCliente);
+        Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), foundCliente);
 
         this.fatturaRepository.save(newFattura);
-        FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), newFattura.getNumeroFattura(), StatoFattura.valueOf(body.statoFattura()), body.clienteId());
+        FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), newFattura.getNumeroFattura(), newFattura.getStatoFattura(), body.clienteId());
         return resp;
     }
 
@@ -57,7 +57,6 @@ public class FatturaService {
 
         foundFattura.setDataFattura(body.dataFattura());
         foundFattura.setImporto(body.importo());
-        foundFattura.setStatoFattura(StatoFattura.valueOf(body.statoFattura()));
         foundFattura.setCliente(foundCliente);
 
         this.fatturaRepository.save(foundFattura);
