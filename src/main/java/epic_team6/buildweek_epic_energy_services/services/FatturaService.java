@@ -41,7 +41,7 @@ public class FatturaService {
 
     //SAVE DI UNA FATTURA
     public FatturaRespDTO save(NewFatturaDTO body) {
-        Cliente foundCliente = this.clienteService.findById(UUID.fromString(body.clienteId()));
+        Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
         Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), foundCliente);
 
         this.fatturaRepository.save(newFattura);
@@ -53,7 +53,7 @@ public class FatturaService {
     public FatturaRespDTO findByIdAndUpdate(UUID fatturaId, NewFatturaDTO body) {
         Fattura foundFattura = this.findById(fatturaId);
 
-        Cliente foundCliente = this.clienteService.findById(UUID.fromString(body.clienteId()));
+        Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
 
         foundFattura.setDataFattura(body.dataFattura());
         foundFattura.setNumeroFattura(body.numeroFattura());
