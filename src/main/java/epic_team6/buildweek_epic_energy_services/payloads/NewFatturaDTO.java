@@ -12,8 +12,6 @@ public record NewFatturaDTO(@NotNull(message = "La data è obbligatoria!")
                             @NotNull(message = "L'importo della fattura è obbligatorio!")
                             @Positive(message = "il prezzo deve essere maggiore di zero!")
                             double importo,
-                            @NotEmpty(message = "Il numero di fattura è obbligatorio!")
-                            String numeroFattura,
                             @Pattern(regexp = "CREATA|INVIATA|PAGATA|SCADUTA|ANNULLATA|RIMBORSATA",
                                     message = "Lo stato della fattura deve essere uno tra CREATA, INVIATA, PAGATA, SCADUTA, ANNULLATA, RIMBORSATA")
                             @NotEmpty(message = "Lo stato fattura è obbligatorio!")
