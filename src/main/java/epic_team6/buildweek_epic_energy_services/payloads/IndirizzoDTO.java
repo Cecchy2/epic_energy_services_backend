@@ -1,5 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.payloads;
 
+import epic_team6.buildweek_epic_energy_services.entities.Comune;
+import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 

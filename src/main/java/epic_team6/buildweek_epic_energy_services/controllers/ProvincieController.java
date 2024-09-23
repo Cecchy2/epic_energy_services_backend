@@ -6,10 +6,8 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.services.ProvincieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -22,11 +20,18 @@ public class ProvincieController {
     @Autowired
     private ProvincieService provinceService;
 
+    @GetMapping
+    public Page<Provincia> findAll(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "uuid") String sortBy) {
+        return this.provinceService.findAll(page, size, sortBy);
+    }
+
     @PostMapping("/upload")
-    public String uploadData(@RequestParam("file")MultipartFile file) throws Exception{
+    public String uploadData(@RequestParam("file") MultipartFile file) throws Exception {
         List<Provincia> province = new ArrayList<>();
         InputStream inputStream = file.getInputStream();
-        CsvParserSettings settings =new CsvParserSettings();
+        CsvParserSettings settings = new CsvParserSettings();
         settings.setHeaderExtractionEnabled(true);
         settings.getFormat().setDelimiter(';');
 

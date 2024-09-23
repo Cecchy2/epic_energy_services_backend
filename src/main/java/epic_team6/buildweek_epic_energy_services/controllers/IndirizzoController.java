@@ -19,8 +19,8 @@ public class IndirizzoController {
 
     @GetMapping
     public Page<Indirizzo> findAll(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(defaultValue = "id") String sortBy) {
+                                   @RequestParam(defaultValue = "1") int size,
+                                   @RequestParam(defaultValue = "uuid") String sortBy) {
         return this.indirizzoService.findAll(page, size, sortBy);
     }
 
