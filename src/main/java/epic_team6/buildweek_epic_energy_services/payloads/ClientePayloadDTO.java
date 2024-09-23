@@ -17,7 +17,6 @@ public record ClientePayloadDTO(
         String nomeContatto,
         String cognomeContatto,
         String telefonoContatto,
-
         TipologiaCliente tipologia,
         UUID indirizzoSedeLegale,
         UUID indirizzoSedeOperativa) {

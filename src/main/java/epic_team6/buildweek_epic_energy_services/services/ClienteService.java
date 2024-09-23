@@ -6,6 +6,10 @@ import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientePayloadDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,7 +21,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    // Metodo per salvare un cliente
+
     public Cliente salvaCliente(ClientePayloadDTO body) {
         if (clienteRepository.existsByEmail(body.email()) || clienteRepository.existsByPartitaIva(body.partitaIva())){
             throw new BadRequestException("Il cliente è già registrato");
@@ -32,18 +36,20 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    // Metodo per ottenere tutti i clienti
-    public List<Cliente> trovaTuttiClienti() {
-        return clienteRepository.findAll();
+
+    public Page<Cliente> trovaTuttiClienti(int page, int size, String sortby) {
+        if (page > 10) page = 10;
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortby));
+        return clienteRepository.findAll(pageable);
     }
 
-    // Metodo per ottenere un cliente per ID
+
     public Cliente trovaClienteById(UUID id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
-    // Metodo per eliminare un cliente per ID
+
     public void cancellaClienteById(UUID id) {
         Cliente cliente = trovaClienteById(id);
         clienteRepository.delete(cliente);

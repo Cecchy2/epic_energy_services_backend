@@ -6,6 +6,7 @@ import epic_team6.buildweek_epic_energy_services.payloads.ClientePayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.ClienteResponseDTO;
 import epic_team6.buildweek_epic_energy_services.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,10 +23,10 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    // Recupera tutti i clienti
+
     @GetMapping
-    public List<Cliente> getAllClienti() {
-        return clienteService.trovaTuttiClienti();
+    public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id")String sortby) {
+        return clienteService.trovaTuttiClienti(page, size, sortby);
     }
 
     // Recupera un cliente per ID
