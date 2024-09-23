@@ -25,13 +25,22 @@ public class FatturaService {
     private ClienteService clienteService;
 
     //FIND ALL CON PAGINAZIONE
-    public Page<Fattura> findAll(int page, int size, String sortBy) {
+    public Page<FatturaRespDTO> findAll(int page, int size, String sortBy) {
 
         if (page > 150) page = 150;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Fattura> fatturaPage = this.fatturaRepository.findAll(pageable);
 
-        return this.fatturaRepository.findAll(pageable);
+        //MAPPO LA PAGE<FATTURA> IN UNA PAGE<FatturaRespDTO>
+        return fatturaPage.map(fattura -> new FatturaRespDTO(
+                fattura.getId(),
+                fattura.getDataFattura(),
+                fattura.getImporto(),
+                fattura.getNumeroFattura(),
+                fattura.getStatoFattura(),
+                fattura.getCliente().getId().toString()));
+
     }
 
     //FIND BY ID
@@ -39,13 +48,21 @@ public class FatturaService {
         return this.fatturaRepository.findById(fatturaId).orElseThrow(() -> new NotFoundException(fatturaId));
     }
 
+    //RESPONSE GET BY ID
+    public FatturaRespDTO findByIdResponse(UUID fatturaId) {
+        Fattura found = this.findById(fatturaId);
+
+        return new FatturaRespDTO(found.getId(), found.getDataFattura(), found.getImporto(), found.getNumeroFattura(),
+                found.getStatoFattura(), found.getCliente().getId().toString());
+    }
+
     //SAVE DI UNA FATTURA
     public FatturaRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
-        Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), foundCliente);
+        Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), foundCliente);
 
         this.fatturaRepository.save(newFattura);
-        FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), body.clienteId());
+        FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), newFattura.getNumeroFattura(), newFattura.getStatoFattura(), body.clienteId());
         return resp;
     }
 
@@ -56,9 +73,7 @@ public class FatturaService {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
 
         foundFattura.setDataFattura(body.dataFattura());
-        foundFattura.setNumeroFattura(body.numeroFattura());
         foundFattura.setImporto(body.importo());
-        foundFattura.setStatoFattura(StatoFattura.valueOf(body.statoFattura()));
         foundFattura.setCliente(foundCliente);
 
         this.fatturaRepository.save(foundFattura);
@@ -78,5 +93,12 @@ public class FatturaService {
         return resp;
     }
 
-    
+    //DELETE
+    public void delete(UUID fatturaId) {
+        Fattura found = this.findById(fatturaId);
+
+        this.fatturaRepository.delete(found);
+    }
+
+
 }
