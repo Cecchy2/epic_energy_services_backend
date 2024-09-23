@@ -16,4 +16,8 @@ public class ProvincieService {
     public List<Provincia> saveAll (List<Provincia> province){
         return provincieRepository.saveAll(province);
     }
+
+    public Provincia findByNome(String nome){
+        return this.provincieRepository.findByNome(nome);
+    }
 }

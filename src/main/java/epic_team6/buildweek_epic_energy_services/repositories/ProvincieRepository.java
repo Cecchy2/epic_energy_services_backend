@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface ProvincieRepository extends JpaRepository<Provincia, UUID> {
+
+    Provincia findByNome (String nome);
 }

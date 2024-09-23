@@ -6,6 +6,7 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import epic_team6.buildweek_epic_energy_services.entities.Comune;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.services.ComuniService;
+import epic_team6.buildweek_epic_energy_services.services.ProvincieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ import java.util.List;
 public class ComuniController {
     @Autowired
     private ComuniService comuniService;
+    @Autowired
+    private ProvincieService provincieService;
 
     @PostMapping("/upload")
     public String uploadData(@RequestParam("file") MultipartFile file) throws Exception{
@@ -34,13 +37,24 @@ public class ComuniController {
         CsvParser parser = new CsvParser(settings);
 
         List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
+
         parseAllRecords.forEach(record -> {
             Comune comune = new Comune();
             comune.setCodiceProvincia(record.getString("Codice Provincia (Storico)(1)"));
             comune.setCodiceProgressivo(record.getString("Progressivo del Comune (2)" ));
+            String denominazione = record.getString("Progressivo del Comune (2)");
+
+
             comune.setNome(record.getString("Denominazione in italiano"));
 
-            comuni.add(comune);
+            String nomeProvincia = record.getString("Denominazione in italiano");
+            Provincia provincia = this.provincieService.findByNome(nomeProvincia);
+
+            if (provincia !=null){
+                comune.setProvincia(provincia);
+            }
+
+                    comuni.add(comune);
 
         });
         comuniService.saveAll(comuni);
