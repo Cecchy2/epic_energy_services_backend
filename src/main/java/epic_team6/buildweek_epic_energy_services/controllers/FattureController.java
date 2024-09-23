@@ -21,7 +21,6 @@ public class FattureController {
     @Autowired
     private FattureService fatturaService;
 
-    //GET LISTA FATTURE
     @GetMapping
     public Page<FattureRespDTO> findAll(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "15") int size,
@@ -29,13 +28,11 @@ public class FattureController {
         return this.fatturaService.findAll(page, size, sortBy);
     }
 
-    //GET FIND BY ID
     @GetMapping("/{fatturaId}")
     public FattureRespDTO findById(@PathVariable UUID fatturaId) {
         return this.fatturaService.findByIdResponse(fatturaId);
     }
 
-    //SAVE FATTURA
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FattureRespDTO save(@RequestBody @Validated NewFatturaDTO body, BindingResult validation) {
@@ -48,7 +45,6 @@ public class FattureController {
         return this.fatturaService.save(body);
     }
 
-    //UPDATE FATTURA
     @PutMapping("/{fatturaId}")
     public FattureRespDTO findByIdAndUpdate(@PathVariable UUID fatturaId, @RequestBody @Validated NewFatturaDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
@@ -60,7 +56,6 @@ public class FattureController {
         return this.fatturaService.findByIdAndUpdate(fatturaId, body);
     }
 
-    //UPDATE STATO FATTURA
     @PatchMapping("/{fatturaId}")
     public FattureRespDTO updateStatoFatturaById(@PathVariable UUID fatturaId, @RequestBody @Validated UpdateStatoFatturaDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
@@ -72,7 +67,6 @@ public class FattureController {
         return this.fatturaService.updateStatoFatturaById(fatturaId, body);
     }
 
-    //DELETE
     @DeleteMapping("/{fatturaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID fatturaId) {

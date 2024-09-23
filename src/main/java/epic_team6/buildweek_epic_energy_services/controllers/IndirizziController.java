@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/indirizzi")
-public class IndirizzoController {
+public class IndirizziController {
     @Autowired
     private IndirizziService indirizzoService;
 

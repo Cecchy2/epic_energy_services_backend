@@ -30,6 +30,19 @@ public class UtentiService {
         return found;
     }
 
+    public Utente findByIdAndUpdate(UUID utenteId, UtentiPayloadDTO body){
+        String avatar = "https://ui-avatars.com/api/?name="+body.nome()+"+"+body.cognome();
+        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(()->new NotFoundException(utenteId));
+        if (found == null)throw new NotFoundException(utenteId);
+        found.setUsername(body.username());
+        found.setEmail(body.email());
+        found.setPassword(body.password());
+        found.setNome(body.nome());
+        found.setCognome(body.cognome());
+
+        return utenteRepository.save(found);
+    }
+
     public Utente saveUtente (UtentiPayloadDTO body){
         if (utenteRepository.existsByEmail(body.email())) throw new BadRequestException("L' email " + body.email() + " è già in uso");
         String avatar = "https://ui-avatars.com/api/?name="+body.nome()+"+"+body.cognome();
