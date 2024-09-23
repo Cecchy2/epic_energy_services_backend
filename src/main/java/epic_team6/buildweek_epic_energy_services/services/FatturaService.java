@@ -25,13 +25,22 @@ public class FatturaService {
     private ClienteService clienteService;
 
     //FIND ALL CON PAGINAZIONE
-    public Page<Fattura> findAll(int page, int size, String sortBy) {
+    public Page<FatturaRespDTO> findAll(int page, int size, String sortBy) {
 
         if (page > 150) page = 150;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Fattura> fatturaPage = this.fatturaRepository.findAll(pageable);
 
-        return this.fatturaRepository.findAll(pageable);
+        //MAPPO LA PAGE<FATTURA> IN UNA PAGE<FatturaRespDTO>
+        return fatturaPage.map(fattura -> new FatturaRespDTO(
+                fattura.getId(),
+                fattura.getDataFattura(),
+                fattura.getImporto(),
+                fattura.getNumeroFattura(),
+                fattura.getStatoFattura(),
+                fattura.getCliente().getId().toString()));
+
     }
 
     //FIND BY ID

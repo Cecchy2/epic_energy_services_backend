@@ -1,6 +1,5 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
-import epic_team6.buildweek_epic_energy_services.entities.Fattura;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.payloads.FatturaRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
@@ -23,9 +22,9 @@ public class FatturaController {
 
     //GET LISTA FATTURE
     @GetMapping
-    public Page<Fattura> findAll(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "15") int size,
-                                 @RequestParam(defaultValue = "id") String sortBy) {
+    public Page<FatturaRespDTO> findAll(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "15") int size,
+                                        @RequestParam(defaultValue = "id") String sortBy) {
         return this.fatturaService.findAll(page, size, sortBy);
     }
 
