@@ -24,8 +24,16 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    public Cliente findById(UUID clienteId) {
-        return this.clienteRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
+    // Metodo per ottenere un cliente per ID
+    public Cliente trovaClienteById(UUID id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
+    }
+
+    // Metodo per eliminare un cliente per ID
+    public void cancellaClienteById(UUID id) {
+        Cliente cliente = trovaClienteById(id);
+        clienteRepository.delete(cliente);
     }
 
 }
