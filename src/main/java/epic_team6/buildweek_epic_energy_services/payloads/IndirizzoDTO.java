@@ -1,28 +1,33 @@
 package epic_team6.buildweek_epic_energy_services.payloads;
 
-import epic_team6.buildweek_epic_energy_services.entities.Comune;
-import epic_team6.buildweek_epic_energy_services.entities.Provincia;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+
+import jakarta.validation.constraints.*;
+
+import java.util.UUID;
 
 public record IndirizzoDTO(
         @NotEmpty(message = "via obbligatoria")
         @Size(min = 10, max = 40, message = "inserisci da 10 a massimo 40 caratteri")
         String via,
-        @NotEmpty(message = "civico obbligatorio")
-        @Size(min = 1, max = 3, message = "inserisci da 1 a massimo 3 caratteri")
+
+        @NotNull(message = "civico obbligatorio")
+        @Min(value = 1, message = "Il numero civico deve essere almeno 1")
+        @Max(value = 999, message = "Il numero civico può essere massimo 999")
         int civico,
+
         @NotEmpty(message = "località obbligatoria")
         @Size(min = 10, max = 40, message = "inserisci da 10 a massimo 40 caratteri")
         String localita,
-        @NotEmpty(message = "cap obbligatorio")
-        @Size(min = 5, max = 5, message = "inserisci 5 caratteri")
+
+        @NotNull(message = "cap obbligatorio")
+        @Min(value = 10000, message = "Il CAP deve essere almeno 5 cifre")
+        @Max(value = 99999, message = "Il CAP deve essere esattamente 5 cifre")
         int cap,
+
         @NotEmpty(message = "id del comune obbligatorio")
-        @Size(min = 36, max = 36, message = "inserisci 36 caratteri")
-        Comune comune,
+        String comune_id,
+
         @NotEmpty(message = "id della provincia obbligatoria")
-        @Size(min = 36, max = 36, message = "inserisci 36 caratteri")
-        Provincia provincia
+        String provincia_id
 ) {
 }

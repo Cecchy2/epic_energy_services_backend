@@ -1,7 +1,10 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
+import epic_team6.buildweek_epic_energy_services.entities.Comune;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
+import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizzoDTO;
+import epic_team6.buildweek_epic_energy_services.repositories.IndirizziResponsDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.IndirizzoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,16 +19,32 @@ import java.util.UUID;
 public class IndirizzoService {
     @Autowired
     private IndirizzoRepository indirizzoRepository;
+    @Autowired
+    private ComuniService comuniService;
+    @Autowired
+    private ProvinceService provinceService;
+
+
+    public IndirizziResponsDTO creaIndirizzo(IndirizzoDTO body){
+        Comune comune = this.comuniService.findById(UUID.fromString(body.comune_id()));
+        Provincia provincia = this.provinceService.findById(UUID.fromString(body.provincia_id()));
+
+        Indirizzo indirizzo= new Indirizzo(body.via(), body.civico(), body.localita(), body.cap(), comune, provincia);
+         this.indirizzoRepository.save(indirizzo);
+        return new IndirizziResponsDTO(indirizzo.getId());
+    }
+
+
 
     public Indirizzo findById(UUID indirizzoId) {
         return this.indirizzoRepository.findById(indirizzoId).orElseThrow();
     }
 
-    public Indirizzo saveIndirizzo(IndirizzoDTO body) {
+    /*public Indirizzo saveIndirizzo(IndirizzoDTO body) {
         Indirizzo indirizzo = new Indirizzo(body.via(), body.civico(), body.localita(), body.cap(), body.comune(), body.provincia());
         Indirizzo savedIndirizzo = this.indirizzoRepository.save(indirizzo);
         return savedIndirizzo;
-    }
+    }*/
 
     public Page<Indirizzo> findAll(int page, int size, String sortBy) {
         if (page > 100) page = 100;

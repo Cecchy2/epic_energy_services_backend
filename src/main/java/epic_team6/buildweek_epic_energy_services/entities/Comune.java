@@ -1,5 +1,6 @@
 package epic_team6.buildweek_epic_energy_services.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Comune {
     private String codiceProgressivo;
     private String nome;
     @ManyToOne
+    @JsonIgnore
     private Provincia provincia;
 
     public Comune(String codiceProvincia, String codiceProgressivo, String nome, Provincia provincia) {
