@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -33,10 +34,10 @@ public class Cliente {
     private String email;
 
     @Column
-    private Date dataInserimento;
+    private LocalDate dataInserimento;
 
     @Column
-    private Date dataUltimoContatto;
+    private LocalDate dataUltimoContatto;
 
     @Column
     private double fatturatoAnnuale;
@@ -67,16 +68,16 @@ public class Cliente {
     private TipologiaCliente tipologia;
 
     @Column
-    private String indirizzoSedeLegale;
+    private UUID indirizzoSedeLegale_id;
 
     @Column
-    private String indirizzoSedeOperativa;
+    private UUID indirizzoSedeOperativa_id;
 
     @OneToMany(mappedBy = "cliente")
     private List<Fattura> fatture;
 
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, Date dataInserimento, Date dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, String indirizzoSedeLegale, String indirizzoSedeOperativa) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, UUID indirizzoSedeLegale, UUID indirizzoSedeOperativa) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
@@ -91,7 +92,7 @@ public class Cliente {
         this.telefonoContatto = telefonoContatto;
         this.logoAziendale = logoAziendale;
         this.tipologia = tipologia;
-        this.indirizzoSedeLegale = indirizzoSedeLegale;
-        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+        this.indirizzoSedeLegale_id = indirizzoSedeLegale;
+        this.indirizzoSedeOperativa_id = indirizzoSedeOperativa;
     }
 }

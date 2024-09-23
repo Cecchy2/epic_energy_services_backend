@@ -4,7 +4,7 @@ import epic_team6.buildweek_epic_energy_services.entities.Comune;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizzoDTO;
-import epic_team6.buildweek_epic_energy_services.repositories.IndirizziResponsDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.IndirizziResponsDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.IndirizzoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

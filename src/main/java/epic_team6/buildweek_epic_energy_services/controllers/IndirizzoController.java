@@ -3,8 +3,7 @@ package epic_team6.buildweek_epic_energy_services.controllers;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizzoDTO;
-import epic_team6.buildweek_epic_energy_services.payloads.NewIndirizzoRespDTO;
-import epic_team6.buildweek_epic_energy_services.repositories.IndirizziResponsDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.IndirizziResponsDTO;
 import epic_team6.buildweek_epic_energy_services.services.IndirizzoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
