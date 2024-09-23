@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/comuni")
@@ -42,17 +43,19 @@ public class ComuniController {
             Comune comune = new Comune();
             comune.setCodiceProvincia(record.getString("Codice Provincia (Storico)(1)"));
             comune.setCodiceProgressivo(record.getString("Progressivo del Comune (2)" ));
-            String denominazione = record.getString("Progressivo del Comune (2)");
-
-
             comune.setNome(record.getString("Denominazione in italiano"));
 
-            String nomeProvincia = record.getString("Denominazione in italiano");
+            Provincia provincia = this.provincieService.findByNome(record.getString("Provincia"));
+            comune.setProvincia(provincia);
+
+           /* String nomeProvincia = record.getString("Denominazione in italiano");
+            System.out.println(nomeProvincia);
             Provincia provincia = this.provincieService.findByNome(nomeProvincia);
+
 
             if (provincia !=null){
                 comune.setProvincia(provincia);
-            }
+            }*/
 
                     comuni.add(comune);
 
