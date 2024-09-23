@@ -4,6 +4,7 @@ import epic_team6.buildweek_epic_energy_services.entities.Cliente;
 import epic_team6.buildweek_epic_energy_services.entities.Fattura;
 import epic_team6.buildweek_epic_energy_services.enums.StatoFattura;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
+import epic_team6.buildweek_epic_energy_services.payloads.FatturaRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.FatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,12 @@ public class FatturaService {
     }
 
     //SAVE DI UNA FATTURA
-    public Fattura save(NewFatturaDTO body) {
+    public FatturaRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.findById(UUID.fromString(body.clienteId()));
         Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), foundCliente);
 
-        return this.fatturaRepository.save(newFattura);
+        this.fatturaRepository.save(newFattura);
+        FatturaRespDTO resp = new FatturaRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), body.numeroFattura(), StatoFattura.valueOf(body.statoFattura()), body.clienteId());
+        return resp;
     }
 }
