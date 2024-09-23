@@ -93,5 +93,12 @@ public class FatturaService {
         return resp;
     }
 
+    //DELETE
+    public void delete(UUID fatturaId) {
+        Fattura found = this.findById(fatturaId);
+
+        this.fatturaRepository.delete(found);
+    }
+
 
 }
