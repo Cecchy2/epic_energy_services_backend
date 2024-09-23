@@ -48,15 +48,6 @@ public class ComuniController {
             Provincia provincia = this.provincieService.findByNome(record.getString("Provincia"));
             comune.setProvincia(provincia);
 
-           /* String nomeProvincia = record.getString("Denominazione in italiano");
-            System.out.println(nomeProvincia);
-            Provincia provincia = this.provincieService.findByNome(nomeProvincia);
-
-
-            if (provincia !=null){
-                comune.setProvincia(provincia);
-            }*/
-
                     comuni.add(comune);
 
         });
