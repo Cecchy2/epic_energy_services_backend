@@ -34,7 +34,7 @@ public class Fattura {
     public Fattura(LocalDate dataFattura, double importo, Cliente cliente) {
         this.dataFattura = dataFattura;
         this.importo = importo;
-        this.numeroFattura = getNumeroFattura();
+        this.numeroFattura = generaNumeroFattura();
         this.statoFattura = StatoFattura.CREATA;
         this.cliente = cliente;
     }
