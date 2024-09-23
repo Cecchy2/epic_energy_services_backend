@@ -31,8 +31,8 @@ public class FatturaController {
 
     //GET FIND BY ID
     @GetMapping("/{fatturaId}")
-    public Fattura findById(@PathVariable UUID fatturaId) {
-        return this.fatturaService.findById(fatturaId);
+    public FatturaRespDTO findById(@PathVariable UUID fatturaId) {
+        return this.fatturaService.findByIdResponse(fatturaId);
     }
 
     //SAVE FATTURA
@@ -46,6 +46,18 @@ public class FatturaController {
         }
 
         return this.fatturaService.save(body);
+    }
+
+    //UPDATE FATTURA
+    @PutMapping("/{fatturaId}")
+    public FatturaRespDTO findByIdAndUpdate(@PathVariable UUID fatturaId, @RequestBody @Validated NewFatturaDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            String messages = validation.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(". "));
+
+            throw new BadRequestException("ci sono stati errori nel payload: " + messages);
+        }
+
+        return this.fatturaService.findByIdAndUpdate(fatturaId, body);
     }
 
 }

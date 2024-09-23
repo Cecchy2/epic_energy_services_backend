@@ -39,6 +39,14 @@ public class FatturaService {
         return this.fatturaRepository.findById(fatturaId).orElseThrow(() -> new NotFoundException(fatturaId));
     }
 
+    //RESPONSE GET BY ID
+    public FatturaRespDTO findByIdResponse(UUID fatturaId) {
+        Fattura found = this.findById(fatturaId);
+
+        return new FatturaRespDTO(found.getId(), found.getDataFattura(), found.getImporto(), found.getNumeroFattura(),
+                found.getStatoFattura(), found.getCliente().getId().toString());
+    }
+
     //SAVE DI UNA FATTURA
     public FatturaRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));

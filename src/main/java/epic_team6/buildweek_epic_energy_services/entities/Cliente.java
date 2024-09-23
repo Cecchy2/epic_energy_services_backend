@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -72,8 +71,8 @@ public class Cliente {
     @Column
     private String indirizzoSedeOperativa;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Fattura> fatture;
+    /*@OneToMany(mappedBy = "cliente")
+    private List<Fattura> fatture;*/
 
 
     public Cliente(String ragioneSociale, String partitaIva, String email, Date dataInserimento, Date dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, String indirizzoSedeLegale, String indirizzoSedeOperativa) {
