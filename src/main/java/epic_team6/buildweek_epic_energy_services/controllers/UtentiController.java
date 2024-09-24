@@ -43,7 +43,7 @@ public class UtentiController {
         return this.utenteService.findAll(page, size, sortBy);
     }
 
-    @GetMapping("/{utentiId}")
+    @GetMapping("/{utenteId}")
     public Utente findById (@PathVariable UUID utenteId){
         Utente found = this.utenteService.findUtenteById(utenteId);
         if (found == null )throw new NotFoundException(utenteId);
@@ -54,13 +54,13 @@ public class UtentiController {
     public Utente findByIdAndUpdate(@PathVariable UUID utenteId,@RequestBody @Validated UtentiPayloadDTO body, BindingResult validationResult){
         if (validationResult.hasErrors()){
             String message = validationResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(". "));
-            throw new BadRequestException("Ci sono errore con il payload " + message);
+            throw new BadRequestException("Ci sono errori con il payload " + message);
         }else {
             return this.utenteService.findByIdAndUpdate(utenteId,body);
         }
     }
 
-    @DeleteMapping("/{dipendenteId}")
+    @DeleteMapping("/{utenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID utenteId){
         this.utenteService.findByIdAndDeleteUtente(utenteId);
