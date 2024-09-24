@@ -28,7 +28,6 @@ public class ExceptionsHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorsResponseDTO handleGenericErrors(Exception e) {
-        //questo mi serve per capire l'entità dell'errore
         e.printStackTrace();
         return new ErrorsResponseDTO("Problema lato server, lo risolveremo al più presto!", LocalDateTime.now());
     }
