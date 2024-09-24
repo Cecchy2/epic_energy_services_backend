@@ -55,4 +55,8 @@ public class UtentiService {
         if (found == null)throw new NotFoundException(utenteId);
         this.utenteRepository.delete(found);
     }
+
+    public Utente findByEmail(String email){
+        return this.utenteRepository.findByEmail(email).orElseThrow(()->new NotFoundException(email));
+    }
 }
