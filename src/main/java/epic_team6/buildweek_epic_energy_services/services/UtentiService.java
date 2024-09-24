@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class UtentiService {
     @Autowired
     private UtentiRepository utenteRepository;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public Page<Utente> findAll(int page, int size, String sortBy) {
         if (page > 100) page = 100;
@@ -46,7 +49,7 @@ public class UtentiService {
     public Utente saveUtente (UtentiPayloadDTO body){
         if (utenteRepository.existsByEmail(body.email())) throw new BadRequestException("L' email " + body.email() + " è già in uso");
         String avatar = "https://ui-avatars.com/api/?name="+body.nome()+"+"+body.cognome();
-        Utente newUtente = new Utente(body.username(), body.email(), body.password(), body.nome(), body.cognome(),avatar) ;
+        Utente newUtente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(),avatar) ;
         return utenteRepository.save(newUtente);
     }
 

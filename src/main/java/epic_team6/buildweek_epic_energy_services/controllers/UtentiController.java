@@ -24,7 +24,7 @@ public class UtentiController {
     @Autowired
     private UtentiService utenteService;
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UtentiResponseDTO save (@RequestBody @Validated UtentiPayloadDTO body, BindingResult validationResult){
         if (validationResult.hasErrors()){
@@ -35,7 +35,7 @@ public class UtentiController {
         }else{
             return new UtentiResponseDTO(this.utenteService.saveUtente(body).getId());
         }
-    }
+    }*/
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
