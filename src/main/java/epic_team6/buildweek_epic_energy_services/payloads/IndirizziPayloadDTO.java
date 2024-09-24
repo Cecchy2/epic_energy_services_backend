@@ -23,9 +23,7 @@ public record IndirizziPayloadDTO(
         int cap,
 
         @NotEmpty(message = "id del comune obbligatorio")
-        String comune_id,
-
-        @NotEmpty(message = "id della provincia obbligatoria")
-        String provincia_id
+        String comune_id
+        
 ) {
 }

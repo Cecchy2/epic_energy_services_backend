@@ -23,16 +23,14 @@ public class Indirizzo {
     @ManyToOne
     @JoinColumn(name = "comune_id")
     private Comune comune;
-    @ManyToOne
-    @JoinColumn(name = "provincia_id")
-    private Provincia provincia;
 
-    public Indirizzo(String via, int civico, String localita, int cap, Comune comune, Provincia provincia) {
+
+    public Indirizzo(String via, int civico, String localita, int cap, Comune comune) {
         this.via = via;
         this.civico = civico;
         this.localita = localita;
         this.cap = cap;
         this.comune = comune;
-        this.provincia = provincia;
+
     }
 }
