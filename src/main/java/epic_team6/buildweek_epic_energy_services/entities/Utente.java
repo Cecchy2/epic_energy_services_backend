@@ -26,13 +26,13 @@ public class Utente {
     @Enumerated(EnumType.STRING)
     private RuoloUtente ruolo;
 
-    public Utente(String username, String email, String password, String nome, String congome, String avatar) {
+    public Utente(String username, String email, String password, String nome, String cognome, String avatar) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nome = nome;
-        this.cognome = congome;
-        this.avatar = avatar;
+        this.cognome = cognome;
+        this.avatar= avatar;
         this.ruolo = RuoloUtente.USER;
     }
 }

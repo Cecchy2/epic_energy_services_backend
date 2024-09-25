@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -30,11 +31,23 @@ public class Fattura {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    public Fattura(LocalDate dataFattura, double importo, String numeroFattura, StatoFattura statoFattura, Cliente cliente) {
+    public Fattura(LocalDate dataFattura, double importo, Cliente cliente) {
         this.dataFattura = dataFattura;
         this.importo = importo;
-        this.numeroFattura = numeroFattura;
-        this.statoFattura = statoFattura;
+        this.numeroFattura = generaNumeroFattura();
+        this.statoFattura = StatoFattura.CREATA;
         this.cliente = cliente;
+    }
+
+
+    private String generaNumeroFattura() {
+
+        int randomNumber = new Random().nextInt(9000) + 1000;  // Un numero casuale tra 1000 e 9999
+
+        // Usa il timestamp o un contatore incrementale per garantire l'unicità
+        long timePart = System.currentTimeMillis();
+
+        // Combina la parte temporale con la parte casuale
+        return "F" + timePart + "-" + randomNumber;
     }
 }

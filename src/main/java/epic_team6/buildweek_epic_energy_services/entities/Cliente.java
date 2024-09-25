@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,39 +21,54 @@ public class Cliente {
     @Id
     @GeneratedValue
     private UUID id;
+
     @Column
     private String ragioneSociale;
+
     @Column
     private String partitaIva;
+
     @Column
     private String email;
+
     @Column
     private LocalDate dataInserimento;
     @Column
     private LocalDate dataUltimoContatto;
     @Column
     private double fatturatoAnnuale;
+
     @Column
     private String pec;
+
     @Column
     private String telefono;
+
     @Column
     private String emailContatto;
+
     @Column
     private String nomeContatto;
+
     @Column
     private String cognomeContatto;
+
     @Column
     private String telefonoContatto;
+
     @Column
     private String logoAziendale;
+
     @Enumerated(EnumType.STRING)
     @Column
     private TipologiaCliente tipologia;
+
     @Column
     private String indirizzoSedeLegale;
+
     @Column
     private String indirizzoSedeOperativa;
+
     @OneToMany(mappedBy = "cliente")
     private List<Fattura> fatture;
 
