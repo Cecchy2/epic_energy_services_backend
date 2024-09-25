@@ -9,6 +9,7 @@ import epic_team6.buildweek_epic_energy_services.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +26,21 @@ public class ClienteController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id")String sortby) {
         return clienteService.trovaTuttiClienti(page, size, sortby);
     }
 
-    @GetMapping("/{dipendenteId}")
-    public Cliente findById(@PathVariable UUID dipendenteId){
-        Cliente found = this.clienteService.trovaClienteById(dipendenteId);
-        if (found == null )throw new NotFoundException(dipendenteId);
+    @GetMapping("/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Cliente findById(@PathVariable UUID clienteId){
+        Cliente found = this.clienteService.trovaClienteById(clienteId);
+        if (found == null )throw new NotFoundException(clienteId);
         return found;
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientiResponseDTO createCliente(@RequestBody @Validated ClientiPayloadDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()){
@@ -51,6 +55,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCliente(@PathVariable UUID id) {
         this.clienteService.cancellaClienteById(id);
