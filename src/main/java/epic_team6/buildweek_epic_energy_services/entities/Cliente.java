@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "clienti")
 public class Cliente {
 
@@ -35,10 +32,8 @@ public class Cliente {
 
     @Column
     private LocalDate dataInserimento;
-
     @Column
     private LocalDate dataUltimoContatto;
-
     @Column
     private double fatturatoAnnuale;
 
@@ -68,16 +63,16 @@ public class Cliente {
     private TipologiaCliente tipologia;
 
     @Column
-    private UUID indirizzoSedeLegale_id;
+    private String indirizzoSedeLegale_id;
 
     @Column
-    private UUID indirizzoSedeOperativa_id;
+    private String indirizzoSedeOperativa_id;
 
     @OneToMany(mappedBy = "cliente")
     private List<Fattura> fatture;
 
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, UUID indirizzoSedeLegale, UUID indirizzoSedeOperativa) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, String indirizzoSedeLegale, String indirizzoSedeOperativa) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
@@ -95,4 +90,5 @@ public class Cliente {
         this.indirizzoSedeLegale_id = indirizzoSedeLegale;
         this.indirizzoSedeOperativa_id = indirizzoSedeOperativa;
     }
+
 }
