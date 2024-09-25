@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -108,6 +109,12 @@ public class FattureService {
 
     public List<Fattura> getFatturaByDataFattura(LocalDate dataFattura){
         return fatturaRepository.findFattureBydataFattura(dataFattura);
+    }
+
+    public List<Fattura> getFatturaByAnno(int anno){
+        LocalDate startDate = LocalDate.of(anno, 1, 1);
+        LocalDate endDate = LocalDate.of(anno, 12, 31);
+        return fatturaRepository.findByDataFatturaBetween(startDate, endDate);
     }
 
 

@@ -93,4 +93,9 @@ public class FattureController {
         return fatturaService.getFattureByStato(statoFatture);
     }
 
+    @GetMapping("/anno")
+    public  List<Fattura> filtraFatturePerAnno (@RequestParam int anno){
+        return fatturaService.getFatturaByAnno(anno);
+    }
+
 }

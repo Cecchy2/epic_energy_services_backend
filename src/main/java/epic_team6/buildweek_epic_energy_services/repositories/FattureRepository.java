@@ -18,4 +18,6 @@ public interface FattureRepository extends JpaRepository<Fattura, UUID> {
     List<Fattura> findFattureByStatoFattura (@Param("statoFattura")StatoFattura statoFattura);
 
     List<Fattura> findFattureBydataFattura(@Param("dataFattura")LocalDate dataFattura);
+
+    List<Fattura> findByDataFatturaBetween(LocalDate startDate, LocalDate endDate);
 }
