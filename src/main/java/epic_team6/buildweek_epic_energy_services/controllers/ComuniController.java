@@ -25,10 +25,10 @@ public class ComuniController {
     private ProvinceService provincieService;
 
     @PostMapping("/upload")
-    public String uploadData(@RequestParam("file") MultipartFile file) throws Exception{
+    public String uploadData(@RequestParam("file") MultipartFile file) throws Exception {
         List<Comune> comuni = new ArrayList<>();
         InputStream inputStream = file.getInputStream();
-        CsvParserSettings settings =new CsvParserSettings();
+        CsvParserSettings settings = new CsvParserSettings();
         settings.setHeaderExtractionEnabled(true);
         settings.getFormat().setDelimiter(';');
 
@@ -37,15 +37,18 @@ public class ComuniController {
         List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
 
         parseAllRecords.forEach(record -> {
+
             Comune comune = new Comune();
             comune.setCodiceProvincia(record.getString("Codice Provincia (Storico)(1)"));
-            comune.setCodiceProgressivo(record.getString("Progressivo del Comune (2)" ));
+            comune.setCodiceProgressivo(record.getString("Progressivo del Comune (2)"));
             comune.setNome(record.getString("Denominazione in italiano"));
 
-            Provincia provincia = this.provincieService.findByNome(record.getString("Provincia"));
+            String recordString = record.getString(3);
+
+            Provincia provincia = this.provincieService.findByNome(recordString);
             comune.setProvincia(provincia);
 
-                    comuni.add(comune);
+            comuni.add(comune);
         });
         comuniService.saveAll(comuni);
         return "Upload dei comuni riuscito";
@@ -53,8 +56,8 @@ public class ComuniController {
 
     @GetMapping
     public Page<Comune> findAll(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(defaultValue = "id") String sortBy) {
+                                @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(defaultValue = "id") String sortBy) {
         return this.comuniService.findAll(page, size, sortBy);
     }
 }
