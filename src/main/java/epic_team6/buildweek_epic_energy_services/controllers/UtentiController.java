@@ -24,19 +24,6 @@ public class UtentiController {
     @Autowired
     private UtentiService utenteService;
 
-    /*@PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UtentiResponseDTO save (@RequestBody @Validated UtentiPayloadDTO body, BindingResult validationResult){
-        if (validationResult.hasErrors()){
-            String message = validationResult.getAllErrors().stream()
-                    .map(objectError -> objectError.getDefaultMessage())
-                    .collect(Collectors.joining(". "));
-            throw new BadRequestException("Ci sono errori nel payload " + message);
-        }else{
-            return new UtentiResponseDTO(this.utenteService.saveUtente(body).getId());
-        }
-    }*/
-
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Utente> findAll(@RequestParam(defaultValue = "0") int page,
@@ -73,7 +60,6 @@ public class UtentiController {
 
     @GetMapping("/me")
     public Utente getProfile(@AuthenticationPrincipal Utente currentAuthenticatedUser) {
-        // Tramite @AuthenticationPrincipal posso accedere ai dati dell'utente che sta effettuando la richiesta
         return currentAuthenticatedUser;
     }
 
