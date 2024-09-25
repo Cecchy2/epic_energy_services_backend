@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,7 +25,6 @@ public class FattureService {
     @Autowired
     private ClientiService clienteService;
 
-    //FIND ALL CON PAGINAZIONE
     public Page<FattureRespDTO> findAll(int page, int size, String sortBy) {
 
         if (page > 150) page = 150;
@@ -32,7 +32,7 @@ public class FattureService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Fattura> fatturaPage = this.fatturaRepository.findAll(pageable);
 
-        //MAPPO LA PAGE<FATTURA> IN UNA PAGE<FatturaRespDTO>
+
         return fatturaPage.map(fattura -> new FattureRespDTO(
                 fattura.getId(),
                 fattura.getDataFattura(),
@@ -43,12 +43,10 @@ public class FattureService {
 
     }
 
-    //FIND BY ID
     public Fattura findById(UUID fatturaId) {
         return this.fatturaRepository.findById(fatturaId).orElseThrow(() -> new NotFoundException(fatturaId));
     }
 
-    //RESPONSE GET BY ID
     public FattureRespDTO findByIdResponse(UUID fatturaId) {
         Fattura found = this.findById(fatturaId);
 
@@ -56,7 +54,6 @@ public class FattureService {
                 found.getStatoFattura(), found.getCliente().getId().toString());
     }
 
-    //SAVE DI UNA FATTURA
     public FattureRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
         Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), foundCliente);
@@ -66,7 +63,6 @@ public class FattureService {
         return resp;
     }
 
-    //FIND BY ID AND UPDATE
     public FattureRespDTO findByIdAndUpdate(UUID fatturaId, NewFatturaDTO body) {
         Fattura foundFattura = this.findById(fatturaId);
 
@@ -82,7 +78,6 @@ public class FattureService {
         return resp;
     }
 
-    //UPDATE STATO FATTURA
     public FattureRespDTO updateStatoFatturaById(UUID fatturaId, UpdateStatoFatturaDTO body) {
         Fattura foundFattura = this.findById(fatturaId);
 
@@ -93,11 +88,17 @@ public class FattureService {
         return resp;
     }
 
-    //DELETE
+
     public void delete(UUID fatturaId) {
         Fattura found = this.findById(fatturaId);
 
         this.fatturaRepository.delete(found);
+    }
+
+    public List<Fattura> getFattureByClienteId(UUID clienteId){
+        List<Fattura> fatture = fatturaRepository.findFattureByClienteId(clienteId);
+        System.out.println("Fatture trovate " + fatture.size());
+        return fatture;
     }
 
 
