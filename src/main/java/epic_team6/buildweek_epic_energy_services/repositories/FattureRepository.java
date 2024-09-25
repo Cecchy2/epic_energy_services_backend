@@ -20,4 +20,6 @@ public interface FattureRepository extends JpaRepository<Fattura, UUID> {
     List<Fattura> findFattureBydataFattura(@Param("dataFattura")LocalDate dataFattura);
 
     List<Fattura> findByDataFatturaBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Fattura> findByImportoBetween(@Param("minimoImporto") double minimoImporto, @Param("massimoImporto") double massimoImporto );
 }

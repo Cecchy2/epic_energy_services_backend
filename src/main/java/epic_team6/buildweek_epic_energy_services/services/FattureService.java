@@ -117,5 +117,9 @@ public class FattureService {
         return fatturaRepository.findByDataFatturaBetween(startDate, endDate);
     }
 
+    public List<Fattura> getFattureConImportoTra (double minimoImporto, double massimoImporto){
+        return fatturaRepository.findByImportoBetween(minimoImporto,massimoImporto);
+    }
+
 
 }

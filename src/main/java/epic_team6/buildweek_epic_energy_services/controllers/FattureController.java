@@ -98,4 +98,9 @@ public class FattureController {
         return fatturaService.getFatturaByAnno(anno);
     }
 
+    @GetMapping("/importo")
+    public List<Fattura> filtrapFatturePerImporto(@RequestParam double minimoImporto, @RequestParam double massimoImporto){
+        return fatturaService.getFattureConImportoTra(minimoImporto,massimoImporto);
+    }
+
 }
