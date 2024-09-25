@@ -44,7 +44,32 @@ public class ComuniController {
             comune.setNome(record.getString("Denominazione in italiano"));
 
             String recordString = record.getString(3);
-
+            if (recordString.equalsIgnoreCase("Monza e della Brianza")) {
+                recordString = "Monza-Brianza";
+            } else if (recordString.equalsIgnoreCase("Reggio nell'Emilia")) {
+                recordString = "Reggio-Emilia";
+            } else if (recordString.equalsIgnoreCase("Ascoli Piceno")) {
+                recordString = "Ascoli-Piceno";
+            } else if (recordString.equalsIgnoreCase("Pesaro e Urbino")) {
+                recordString = "Pesaro-Urbino";
+            } else if (recordString.equalsIgnoreCase("Sud Sardegna")) {
+                recordString = "Carbonia Iglesias";
+            } else if (recordString.equalsIgnoreCase("Verbano-Cusio-Ossola")) {
+                recordString = "Verbania";
+            } else if (recordString.equalsIgnoreCase("Vibo Valentia")) {
+                recordString = "Vibo-Valentia";
+            } else if (recordString.equalsIgnoreCase("Forlì-Cesena")) {
+                recordString = "Forli-Cesena";
+            } else if (recordString.equalsIgnoreCase("Bolzano/Bozen")) {
+                recordString = "Bolzano";
+            } else if (recordString.equalsIgnoreCase("Valle d'Aosta/Vallée d'Aoste")) {
+                recordString = "Aosta";
+            } else if (recordString.equalsIgnoreCase("Reggio Calabria")) {
+                recordString = "Reggio-Calabria";
+            } else if (recordString.equalsIgnoreCase("La Spezia")) {
+                recordString = "La-Spezia";
+            }
+            System.out.println(recordString);
             Provincia provincia = this.provincieService.findByNome(recordString);
             comune.setProvincia(provincia);
 
