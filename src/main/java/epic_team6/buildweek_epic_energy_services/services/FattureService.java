@@ -100,5 +100,8 @@ public class FattureService {
         this.fatturaRepository.delete(found);
     }
 
-
+    public Page<Fattura> filtraFatturaByClienteId(UUID clienteId, Pageable pageable) {
+        if (clienteId == null) throw new NotFoundException(clienteId);
+        return fatturaRepository.findByClienteId(clienteId, pageable);
+    }
 }

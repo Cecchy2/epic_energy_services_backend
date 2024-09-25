@@ -80,4 +80,11 @@ public class FattureController {
         this.fatturaService.delete(fatturaId);
     }
 
+//    @GetMapping
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public Page<Fattura> filtraFattureByClienteId(@RequestParam UUID clienteId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Pageable pageable) {
+//        Pageable pageable1 = PageRequest.of(page, size);
+//        return fatturaService.filtraFatturaByClienteId(clienteId, pageable);
+//    }
+
 }
