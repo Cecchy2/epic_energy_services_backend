@@ -1,17 +1,19 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
-import epic_team6.buildweek_epic_energy_services.payloads.ClienteDTO;
-import epic_team6.buildweek_epic_energy_services.services.ClienteService;
-import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
+import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
+import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
+import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.ClientiResponseDTO;
+import epic_team6.buildweek_epic_energy_services.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,44 +22,45 @@ import java.util.stream.Collectors;
 public class ClienteController {
 
     @Autowired
-    private ClienteService clienteService;
+    private ClientiService clienteService;
 
-    // Recupera tutti i clienti
+
     @GetMapping
-    public List<Cliente> getAllClienti() {
-        return clienteService.trovaTuttiClienti();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id")String sortby) {
+        return clienteService.trovaTuttiClienti(page, size, sortby);
     }
 
-    // Recupera un cliente per ID
-    @GetMapping("/{id}")
-    public Cliente getClienteById(@PathVariable UUID id) {
-        return clienteService.trovaClienteById(id);
+    @GetMapping("/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Cliente findById(@PathVariable UUID clienteId){
+        Cliente found = this.clienteService.trovaClienteById(clienteId);
+        if (found == null )throw new NotFoundException(clienteId);
+        return found;
     }
 
-    // Crea un nuovo cliente
-    @PostMapping
+    @PostMapping("/register")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ClienteRespDTO createCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
+    public ClientiResponseDTO createCliente(@RequestBody @Validated ClientiPayloadDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()){
             String messages = validationResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .map(objectError -> objectError.getDefaultMessage())
                     .collect(Collectors.joining(". "));
-            throw new BadRequestException("Ci sono stati errori nel payload: " + messages);
+
+            throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
+        }else{
+            return new ClientiResponseDTO(this.clienteService.salvaCliente(body).getId());
         }
-        return new ClienteRespDTO(clienteService.salvaCliente(body).getId());
     }
 
-    // Aggionamento cliente
-    @PutMapping("/{id}")
-    public Cliente updateCliente(@PathVariable UUID id, @RequestBody @Valid ClienteDTO body) {
-        return clienteService.aggiornaESalvaCliente(id, body);
-    }
-
-    // Elimina un cliente per ID
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCliente(@PathVariable UUID id) {
-        clienteService.cancellaClienteById(id);
+        this.clienteService.cancellaClienteById(id);
     }
+
+
 }
 

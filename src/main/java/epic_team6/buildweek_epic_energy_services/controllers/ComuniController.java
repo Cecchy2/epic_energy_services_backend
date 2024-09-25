@@ -8,10 +8,8 @@ import epic_team6.buildweek_epic_energy_services.entities.Provincia;
 import epic_team6.buildweek_epic_energy_services.services.ComuniService;
 import epic_team6.buildweek_epic_energy_services.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -48,9 +46,15 @@ public class ComuniController {
             comune.setProvincia(provincia);
 
                     comuni.add(comune);
-
         });
         comuniService.saveAll(comuni);
         return "Upload dei comuni riuscito";
+    }
+
+    @GetMapping
+    public Page<Comune> findAll(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "id") String sortBy) {
+        return this.comuniService.findAll(page, size, sortBy);
     }
 }
