@@ -1,5 +1,6 @@
 package epic_team6.buildweek_epic_energy_services.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,7 +72,7 @@ public class Cliente {
 
     @Column
     private UUID indirizzoSedeOperativa_id;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Fattura> fatture;
 
