@@ -4,7 +4,7 @@ import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import epic_team6.buildweek_epic_energy_services.entities.Provincia;
-import epic_team6.buildweek_epic_energy_services.services.ProvincieService;
+import epic_team6.buildweek_epic_energy_services.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +16,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/province")
-public class ProvincieController {
+public class ProvinceController {
     @Autowired
-    private ProvincieService provinceService;
+    private ProvinceService provinceService;
 
     @GetMapping
     public Page<Provincia> findAll(@RequestParam(defaultValue = "0") int page,
