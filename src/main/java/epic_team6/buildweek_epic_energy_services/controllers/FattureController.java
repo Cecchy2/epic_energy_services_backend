@@ -84,23 +84,23 @@ public class FattureController {
     }
 
     @GetMapping("/cliente")
-    public List<Fattura> filtraPerCliente(@RequestParam UUID clienteId){
+    public List<Fattura> filtraPerCliente(@RequestParam UUID clienteId) {
         return fatturaService.getFattureByClienteId(clienteId);
     }
 
     @GetMapping("/statoFatture")
-    public List<Fattura> filtraPerStato (@RequestParam StatoFattura statoFatture){
+    public List<Fattura> filtraPerStato(@RequestParam StatoFattura statoFatture) {
         return fatturaService.getFattureByStato(statoFatture);
     }
 
     @GetMapping("/anno")
-    public  List<Fattura> filtraFatturePerAnno (@RequestParam int anno){
+    public List<Fattura> filtraFatturePerAnno(@RequestParam int anno) {
         return fatturaService.getFatturaByAnno(anno);
     }
 
     @GetMapping("/importo")
-    public List<Fattura> filtrapFatturePerImporto(@RequestParam double minimoImporto, @RequestParam double massimoImporto){
-        return fatturaService.getFattureConImportoTra(minimoImporto,massimoImporto);
+    public List<Fattura> filtrapFatturePerImporto(@RequestParam double minimoImporto, @RequestParam double massimoImporto) {
+        return fatturaService.findByImporto(minimoImporto, massimoImporto);
     }
 
 }

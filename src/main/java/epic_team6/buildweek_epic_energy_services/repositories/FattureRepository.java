@@ -3,6 +3,7 @@ package epic_team6.buildweek_epic_energy_services.repositories;
 import epic_team6.buildweek_epic_energy_services.entities.Fattura;
 import epic_team6.buildweek_epic_energy_services.enums.StatoFattura;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +16,14 @@ public interface FattureRepository extends JpaRepository<Fattura, UUID> {
 
     List<Fattura> findFattureByClienteId(@Param("clienteId") UUID clienteId);
 
-    List<Fattura> findFattureByStatoFattura (@Param("statoFattura")StatoFattura statoFattura);
+    List<Fattura> findFattureByStatoFattura(@Param("statoFattura") StatoFattura statoFattura);
 
-    List<Fattura> findFattureBydataFattura(@Param("dataFattura")LocalDate dataFattura);
+    List<Fattura> findFattureBydataFattura(@Param("dataFattura") LocalDate dataFattura);
 
     List<Fattura> findByDataFatturaBetween(LocalDate startDate, LocalDate endDate);
 
-    List<Fattura> findByImportoBetween(@Param("minimoImporto") double minimoImporto, @Param("massimoImporto") double massimoImporto );
+    List<Fattura> findByImportoBetween(@Param("minimoImporto") double minimoImporto, @Param("massimoImporto") double massimoImporto);
+
+    @Query("SELECT f FROM Fattura f WHERE f.importo BETWEEN :minImporto AND :maxImporto")
+    List<Fattura> findByImporto(@Param("minImporto") double minImp, @Param("maxImporto") double maxImp);
 }
