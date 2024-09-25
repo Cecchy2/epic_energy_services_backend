@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -97,28 +96,28 @@ public class FattureService {
         this.fatturaRepository.delete(found);
     }
 
-    public List<Fattura> getFattureByClienteId(UUID clienteId){
+    public List<Fattura> getFattureByClienteId(UUID clienteId) {
         List<Fattura> fatture = fatturaRepository.findFattureByClienteId(clienteId);
         System.out.println("Fatture trovate " + fatture.size());
         return fatture;
     }
 
-    public List<Fattura> getFattureByStato(StatoFattura statoFattura){
+    public List<Fattura> getFattureByStato(StatoFattura statoFattura) {
         return fatturaRepository.findFattureByStatoFattura(statoFattura);
     }
 
-    public List<Fattura> getFatturaByDataFattura(LocalDate dataFattura){
+    public List<Fattura> getFatturaByDataFattura(LocalDate dataFattura) {
         return fatturaRepository.findFattureBydataFattura(dataFattura);
     }
 
-    public List<Fattura> getFatturaByAnno(int anno){
+    public List<Fattura> getFatturaByAnno(int anno) {
         LocalDate startDate = LocalDate.of(anno, 1, 1);
         LocalDate endDate = LocalDate.of(anno, 12, 31);
         return fatturaRepository.findByDataFatturaBetween(startDate, endDate);
     }
 
-    public List<Fattura> getFattureConImportoTra (double minimoImporto, double massimoImporto){
-        return fatturaRepository.findByImportoBetween(minimoImporto,massimoImporto);
+    public List<Fattura> findByImporto(double minimoImporto, double massimoImporto) {
+        return fatturaRepository.findByImporto(minimoImporto, massimoImporto);
     }
 
 
