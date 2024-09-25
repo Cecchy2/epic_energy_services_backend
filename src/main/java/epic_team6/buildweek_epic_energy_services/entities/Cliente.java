@@ -1,6 +1,5 @@
 package epic_team6.buildweek_epic_energy_services.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import jakarta.persistence.*;
@@ -40,15 +39,15 @@ public class Cliente {
 
     @Enumerated(EnumType.STRING)
     private TipologiaCliente tipologia;
-    private UUID indirizzoSedeLegale_id;
-    private UUID indirizzoSedeOperativa_id;
+    private String indirizzoSedeLegale_id;
+    private String indirizzoSedeOperativa_id;
 
     @OneToMany(mappedBy = "cliente")
 
     private List<Fattura> fatture;
 
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, UUID indirizzoSedeLegale, UUID indirizzoSedeOperativa) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, TipologiaCliente tipologia, String indirizzoSedeLegale, String indirizzoSedeOperativa) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
