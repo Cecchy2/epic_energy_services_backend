@@ -1,6 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
 import epic_team6.buildweek_epic_energy_services.entities.Fattura;
+import epic_team6.buildweek_epic_energy_services.enums.StatoFattura;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.payloads.FattureRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
@@ -85,6 +86,11 @@ public class FattureController {
     @GetMapping("/cliente")
     public List<Fattura> filtraPerCliente(@RequestParam UUID clienteId){
         return fatturaService.getFattureByClienteId(clienteId);
+    }
+
+    @GetMapping("/statoFatture")
+    public List<Fattura> filtraPerStato (@RequestParam StatoFattura statoFatture){
+        return fatturaService.getFattureByStato(statoFatture);
     }
 
 }

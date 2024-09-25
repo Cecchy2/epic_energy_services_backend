@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,6 +100,14 @@ public class FattureService {
         List<Fattura> fatture = fatturaRepository.findFattureByClienteId(clienteId);
         System.out.println("Fatture trovate " + fatture.size());
         return fatture;
+    }
+
+    public List<Fattura> getFattureByStato(StatoFattura statoFattura){
+        return fatturaRepository.findFattureByStatoFattura(statoFattura);
+    }
+
+    public List<Fattura> getFatturaByDataFattura(LocalDate dataFattura){
+        return fatturaRepository.findFattureBydataFattura(dataFattura);
     }
 
 
