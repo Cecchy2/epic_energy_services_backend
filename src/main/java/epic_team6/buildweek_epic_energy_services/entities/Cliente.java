@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import lombok.ToString;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "clienti")
 @JsonIgnoreProperties({"fatture"})
 public class Cliente {
@@ -64,5 +65,4 @@ public class Cliente {
         this.indirizzoSedeLegale_id = indirizzoSedeLegale;
         this.indirizzoSedeOperativa_id = indirizzoSedeOperativa;
     }
-
 }
