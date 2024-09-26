@@ -1,5 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
+import epic_team6.buildweek_epic_energy_services.entities.Fattura;
+import epic_team6.buildweek_epic_energy_services.enums.StatoFattura;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.payloads.FattureRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
