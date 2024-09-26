@@ -1,6 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
 import epic_team6.buildweek_epic_energy_services.entities.Utente;
+import epic_team6.buildweek_epic_energy_services.enums.RuoloUtente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.UtentiPayloadDTO;
@@ -60,6 +61,14 @@ public class UtentiService {
         mailgunSender.sendRegistrationEmail(utenteSalvato);
 
         return utenteSalvato;
+    }
+
+    public void sendEmailAsAdmin(UUID userId, String emailSubject, String emailContent) {
+        Utente admin = utenteRepository.findById(userId).orElseThrow(() -> new NotFoundException("Admin non trovato"));
+        if (admin.getRuolo() != RuoloUtente.ADMIN) {
+            throw new SecurityException("Operazione non autorizzata. Solo gli amministratori possono inviare email.");
+        }
+        mailgunSender.sendMailByAdmin(admin.getEmail(), emailSubject, emailContent);
     }
 
     public void findByIdAndDeleteUtente(UUID utenteId) {

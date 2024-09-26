@@ -18,6 +18,7 @@ public class MailgunSender {
     }
 
     public void sendRegistrationEmail(Utente recipient) {
+
         HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
                 .basicAuth("api", this.apiKey)
                 .queryString("from", "kennyboateng.99@gmail.com")
@@ -27,6 +28,18 @@ public class MailgunSender {
                 .asJson();
         System.out.println((response.getBody()));
     }
+
+    public void sendMailByAdmin(String recipientEmail, String subject, String content) {
+        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
+                .basicAuth("api", this.apiKey)
+                .queryString("from", "kennyboateng.99@gmail.com")
+                .queryString("to", recipientEmail)
+                .queryString("subject", subject)
+                .queryString("text", content)
+                .asJson();
+        System.out.println(response.getBody());
+    }
+
 //    public void sendMailByAdmin( Utente recipient){
 //        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
 //                .basicAuth("api", this.apiKey)
