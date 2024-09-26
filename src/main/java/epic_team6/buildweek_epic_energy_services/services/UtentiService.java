@@ -1,10 +1,12 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
 import epic_team6.buildweek_epic_energy_services.entities.Utente;
+import epic_team6.buildweek_epic_energy_services.enums.RuoloUtente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.UtentiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.UtentiRepository;
+import epic_team6.buildweek_epic_energy_services.tools.MailgunSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ public class UtentiService {
     private UtentiRepository utenteRepository;
     @Autowired
     private PasswordEncoder bcrypt;
+    @Autowired
+    private MailgunSender mailgunSender;
+
 
     public Page<Utente> findAll(int page, int size, String sortBy) {
         if (page > 100) page = 100;
@@ -28,15 +33,15 @@ public class UtentiService {
         return this.utenteRepository.findAll(pageable);
     }
 
-    public Utente findUtenteById(UUID utenteId){
-        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(()->new NotFoundException(utenteId));
+    public Utente findUtenteById(UUID utenteId) {
+        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(() -> new NotFoundException(utenteId));
         return found;
     }
 
-    public Utente findByIdAndUpdate(UUID utenteId, UtentiPayloadDTO body){
-        String avatar = "https://ui-avatars.com/api/?name="+body.nome()+"+"+body.cognome();
-        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(()->new NotFoundException(utenteId));
-        if (found == null)throw new NotFoundException(utenteId);
+    public Utente findByIdAndUpdate(UUID utenteId, UtentiPayloadDTO body) {
+        String avatar = "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome();
+        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(() -> new NotFoundException(utenteId));
+        if (found == null) throw new NotFoundException(utenteId);
         found.setUsername(body.username());
         found.setEmail(body.email());
         found.setPassword(body.password());
@@ -46,20 +51,33 @@ public class UtentiService {
         return utenteRepository.save(found);
     }
 
-    public Utente saveUtente (UtentiPayloadDTO body){
-        if (utenteRepository.existsByEmail(body.email())) throw new BadRequestException("L' email " + body.email() + " è già in uso");
-        String avatar = "https://ui-avatars.com/api/?name="+body.nome()+"+"+body.cognome();
-        Utente newUtente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(),avatar) ;
-        return utenteRepository.save(newUtente);
+    public Utente saveUtente(UtentiPayloadDTO body) {
+        if (utenteRepository.existsByEmail(body.email()))
+            throw new BadRequestException("L' email " + body.email() + " è già in uso");
+        String avatar = "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome();
+        Utente newUtente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), avatar);
+        Utente utenteSalvato = this.utenteRepository.save(newUtente);
+
+        mailgunSender.sendRegistrationEmail(utenteSalvato);
+
+        return utenteSalvato;
     }
 
-    public void findByIdAndDeleteUtente(UUID utenteId){
-        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(()->new NotFoundException(utenteId));
-        if (found == null)throw new NotFoundException(utenteId);
+    public void sendEmailAsAdmin(UUID userId, String emailSubject, String emailContent) {
+        Utente admin = utenteRepository.findById(userId).orElseThrow(() -> new NotFoundException("Admin non trovato"));
+        if (admin.getRuolo() != RuoloUtente.ADMIN) {
+            throw new SecurityException("Operazione non autorizzata. Solo gli amministratori possono inviare email.");
+        }
+        mailgunSender.sendMailByAdmin(admin.getEmail(), emailSubject, emailContent);
+    }
+
+    public void findByIdAndDeleteUtente(UUID utenteId) {
+        Utente found = this.utenteRepository.findById(utenteId).orElseThrow(() -> new NotFoundException(utenteId));
+        if (found == null) throw new NotFoundException(utenteId);
         this.utenteRepository.delete(found);
     }
 
-    public Utente findByEmail(String email){
-        return this.utenteRepository.findByEmail(email).orElseThrow(()->new NotFoundException(email));
+    public Utente findByEmail(String email) {
+        return this.utenteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
     }
 }
