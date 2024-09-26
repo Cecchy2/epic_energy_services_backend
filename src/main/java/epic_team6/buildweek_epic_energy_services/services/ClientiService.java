@@ -1,5 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
 import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
@@ -12,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +25,8 @@ import java.util.UUID;
 public class ClientiService {
     @Autowired
     private ClientiRepository clienteRepository;
+    @Autowired
+    private Cloudinary cloudinary;
 
 
     public Cliente salvaCliente(ClientiPayloadDTO body) {
@@ -54,6 +60,18 @@ public class ClientiService {
     public void cancellaClienteById(UUID id) {
         Cliente cliente = trovaClienteById(id);
         clienteRepository.delete(cliente);
+    }
+
+    public Cliente uploadLogoAziendale(UUID clienteId, MultipartFile pic) throws IOException {
+        Cliente found = this.trovaClienteById(clienteId);
+
+        String url = (String) cloudinary.uploader().upload(pic.getBytes(), ObjectUtils.emptyMap()).get("url");
+
+        System.out.println("URL: " + url);
+
+        found.setLogoAziendale(url);
+
+        return this.clienteRepository.save(found);
     }
 
     /*public List<Cliente> findByFilters(Double minFatturato, Double maxFatturato,
