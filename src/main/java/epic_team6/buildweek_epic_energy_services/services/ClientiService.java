@@ -52,6 +52,8 @@ public class ClientiService {
     public Cliente findByIdAndUpdate(UUID clienteId, ClientiPayloadDTO body) {
 
         Cliente found = this.clienteRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
+        Indirizzo indirizzolegale = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeLegale()));
+        Indirizzo indirizzoOperativa = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeOperativa()));
         if (found == null) throw new NotFoundException(clienteId);
         found.setRagioneSociale(body.ragioneSociale());
         found.setPartitaIva(body.partitaIva());
@@ -65,8 +67,8 @@ public class ClientiService {
         found.setCognomeContatto(body.cognomeContatto());
         found.setTelefonoContatto(body.telefonoContatto());
         found.setTipologia(TipologiaCliente.valueOf(body.tipologia()));
-        found.setIndirizzoSedeLegale_id(body.indirizzoSedeLegale());
-        found.setIndirizzoSedeOperativa_id(body.indirizzoSedeOperativa());
+        found.setIndirizzoSedeLegale_id(indirizzolegale);
+        found.setIndirizzoSedeOperativa_id(indirizzoOperativa);
 
 
         return clienteRepository.save(found);
