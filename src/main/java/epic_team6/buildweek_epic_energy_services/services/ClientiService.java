@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -55,4 +56,29 @@ public class ClientiService {
         clienteRepository.delete(cliente);
     }
 
+    /*public List<Cliente> findByFilters(Double minFatturato, Double maxFatturato,
+                                       LocalDate inizioDataInserimento, LocalDate fineDataInserimento,
+                                       LocalDate inizioDataContatto, LocalDate fineDataContatto,
+                                       String parteNome) {
+
+        return this.clienteRepository.findByFilters(minFatturato, maxFatturato, inizioDataInserimento,
+                fineDataInserimento, inizioDataContatto, fineDataContatto,
+                parteNome);
+    }*/
+
+    public List<Cliente> findByParteDelNome(String parteNome) {
+        return this.clienteRepository.findByParteDelNome(parteNome);
+    }
+
+    public List<Cliente> findByFatturatoAnnuale(double minFatturato, double maxFatturato) {
+        return this.clienteRepository.findByFatturatoAnnuale(minFatturato, maxFatturato);
+    }
+
+    public List<Cliente> findByDataInserimento(LocalDate inizioDataInserimento, LocalDate fineDataInserimento) {
+        return this.clienteRepository.findByDataInserimento(inizioDataInserimento, fineDataInserimento);
+    }
+
+    public List<Cliente> findByDataUltimoContatto(LocalDate inizioDataContatto, LocalDate fineDataContatto) {
+        return this.clienteRepository.findByDataUltimoContatto(inizioDataContatto, fineDataContatto);
+    }
 }
