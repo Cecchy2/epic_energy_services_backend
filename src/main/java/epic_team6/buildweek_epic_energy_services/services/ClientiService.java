@@ -3,6 +3,7 @@ package epic_team6.buildweek_epic_energy_services.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
+import epic_team6.buildweek_epic_energy_services.entities.Fattura;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
@@ -10,6 +11,7 @@ import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.UpdateClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.ClientiRepository;
+import epic_team6.buildweek_epic_energy_services.repositories.FattureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,8 @@ import java.util.UUID;
 public class ClientiService {
     @Autowired
     private ClientiRepository clienteRepository;
+    @Autowired
+    private FattureRepository fattureRepository;
     @Autowired
     private Cloudinary cloudinary;
     @Autowired
@@ -89,7 +93,10 @@ public class ClientiService {
 
 
     public void cancellaClienteById(UUID id) {
+
         Cliente cliente = trovaClienteById(id);
+        List<Fattura> fatture = cliente.getFatture();
+        fattureRepository.deleteAll(fatture);
         clienteRepository.delete(cliente);
     }
 

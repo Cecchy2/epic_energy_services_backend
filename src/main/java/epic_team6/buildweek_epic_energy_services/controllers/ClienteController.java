@@ -74,6 +74,7 @@ public class ClienteController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCliente(@PathVariable UUID id) {
+
         this.clienteService.cancellaClienteById(id);
     }
 
