@@ -44,6 +44,32 @@ public class ProvinceController {
             provincia.setNome(record.getString("Provincia"));
             provincia.setRegione(record.getString("Regione"));
 
+            if (provincia.getNome().equalsIgnoreCase("Monza-Brianza")) {
+                provincia.setNome("Monza e della Brianza");
+            } else if (provincia.getNome().equalsIgnoreCase("Reggio-Emilia")) {
+                provincia.setNome("Reggio nell'Emilia");
+            } else if (provincia.getNome().equalsIgnoreCase("Ascoli-Piceno")) {
+                provincia.setNome("Ascoli Piceno");
+            } else if (provincia.getNome().equalsIgnoreCase("Pesaro-Urbino")) {
+                provincia.setNome("Pesaro e Urbino");
+            } else if (provincia.getNome().equalsIgnoreCase("Carbonia Iglesias")) {
+                provincia.setNome("Sud Sardegna");
+            } else if (provincia.getNome().equalsIgnoreCase("Verbania")) {
+                provincia.setNome("Verbano-Cusio-Ossola");
+            } else if (provincia.getNome().equalsIgnoreCase("Vibo-Valentia")) {
+                provincia.setNome("Vibo Valentia");
+            } else if (provincia.getNome().equalsIgnoreCase("Forli-Cesena")) {
+                provincia.setNome("Forlì-Cesena");
+            } else if (provincia.getNome().equalsIgnoreCase("Bolzano")) {
+                provincia.setNome("Bolzano/Bozen");
+            } else if (provincia.getNome().equalsIgnoreCase("Aosta")) {
+                provincia.setNome("Valle d'Aosta/Vallée d'Aoste");
+            } else if (provincia.getNome().equalsIgnoreCase("Reggio-Calabria")) {
+                provincia.setNome("Reggio Calabria");
+            } else if (provincia.getNome().equalsIgnoreCase("La-Spezia")) {
+                provincia.setNome("La Spezia");
+            }
+
             province.add(provincia);
         });
         provinceService.saveAll(province);
