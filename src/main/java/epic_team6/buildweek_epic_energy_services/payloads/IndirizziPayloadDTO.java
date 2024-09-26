@@ -14,16 +14,15 @@ public record IndirizziPayloadDTO(
         int civico,
 
         @NotEmpty(message = "località obbligatoria")
-        @Size(min = 10, max = 40, message = "inserisci da 10 a massimo 40 caratteri")
+        @Size(min = 5, max = 40, message = "inserisci da 10 a massimo 40 caratteri")
         String localita,
 
         @NotNull(message = "cap obbligatorio")
-        @Min(value = 10000, message = "Il CAP deve essere almeno 5 cifre")
         @Max(value = 99999, message = "Il CAP deve essere esattamente 5 cifre")
         int cap,
 
         @NotEmpty(message = "id del comune obbligatorio")
         String comune_id
-        
+
 ) {
 }

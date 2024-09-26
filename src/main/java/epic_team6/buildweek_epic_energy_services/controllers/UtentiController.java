@@ -14,7 +14,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -72,6 +74,11 @@ public class UtentiController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProfile(@AuthenticationPrincipal Utente currentAuthenticatedUser) {
         this.utenteService.findByIdAndDeleteUtente(currentAuthenticatedUser.getId());
+    }
+
+    @PatchMapping("/me")
+    public Utente uploadAvatarPic(@AuthenticationPrincipal Utente utente, @RequestParam("pic") MultipartFile pic) throws IOException {
+        return this.utenteService.uploadAvatarPic(utente.getId(), pic);
     }
 
     @PostMapping("/send-email/{userId}")

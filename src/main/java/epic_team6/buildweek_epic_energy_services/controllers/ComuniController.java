@@ -44,7 +44,7 @@ public class ComuniController {
             comune.setNome(record.getString("Denominazione in italiano"));
 
             String recordString = record.getString(3);
-            if (recordString.equalsIgnoreCase("Monza e della Brianza")) {
+            /*if (recordString.equalsIgnoreCase("Monza e della Brianza")) {
                 recordString = "Monza-Brianza";
             } else if (recordString.equalsIgnoreCase("Reggio nell'Emilia")) {
                 recordString = "Reggio-Emilia";
@@ -68,7 +68,7 @@ public class ComuniController {
                 recordString = "Reggio-Calabria";
             } else if (recordString.equalsIgnoreCase("La Spezia")) {
                 recordString = "La-Spezia";
-            }
+            }*/
             System.out.println(recordString);
             Provincia provincia = this.provincieService.findByNome(recordString);
             comune.setProvincia(provincia);

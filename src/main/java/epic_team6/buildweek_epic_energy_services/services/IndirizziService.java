@@ -2,7 +2,7 @@ package epic_team6.buildweek_epic_energy_services.services;
 
 import epic_team6.buildweek_epic_energy_services.entities.Comune;
 import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
-import epic_team6.buildweek_epic_energy_services.entities.Provincia;
+import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizziPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.IndirizziResponsDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.IndirizziRepository;
@@ -25,19 +25,18 @@ public class IndirizziService {
     private ProvinceService provinceService;
 
 
-    public IndirizziResponsDTO creaIndirizzo(IndirizziPayloadDTO body){
+    public IndirizziResponsDTO creaIndirizzo(IndirizziPayloadDTO body) {
         Comune comune = this.comuniService.findById(UUID.fromString(body.comune_id()));
         //Provincia provincia = this.provinceService.findById(UUID.fromString(body.provincia_id()));
 
-        Indirizzo indirizzo= new Indirizzo(body.via(), body.civico(), body.localita(), body.cap(), comune);
-         this.indirizzoRepository.save(indirizzo);
+        Indirizzo indirizzo = new Indirizzo(body.via(), body.civico(), body.localita(), body.cap(), comune);
+        this.indirizzoRepository.save(indirizzo);
         return new IndirizziResponsDTO(indirizzo.getId());
     }
 
 
-
     public Indirizzo findById(UUID indirizzoId) {
-        return this.indirizzoRepository.findById(indirizzoId).orElseThrow();
+        return this.indirizzoRepository.findById(indirizzoId).orElseThrow(() -> new NotFoundException(indirizzoId));
     }
 
     /*public Indirizzo saveIndirizzo(IndirizzoDTO body) {
