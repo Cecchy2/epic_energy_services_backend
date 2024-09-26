@@ -3,12 +3,12 @@ package epic_team6.buildweek_epic_energy_services.controllers;
 import epic_team6.buildweek_epic_energy_services.entities.Utente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
+import epic_team6.buildweek_epic_energy_services.payloads.EmailPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.UtentiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -83,14 +83,18 @@ public class UtentiController {
 
     @PostMapping("/send-email/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> sendEmailToUser(@PathVariable UUID userId, @RequestParam String subject, @RequestParam String content) {
-        try {
+    public void sendEmailToUser(@PathVariable UUID userId, @RequestBody @Validated EmailPayloadDTO body) {
+
+        this.utenteService.sendEmailAsAdmin(userId, body.emailSubject(), body.emailContent());
+
+
+        /*try {
             utenteService.sendEmailAsAdmin(userId, subject, content);
             return ResponseEntity.ok("Email inviata correttamente.");
         } catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non autorizzato.");
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato.");
-        }
+        }*/
     }
 }

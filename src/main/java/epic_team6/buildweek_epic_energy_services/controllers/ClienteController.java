@@ -70,6 +70,8 @@ public class ClienteController {
         return this.clienteService.uploadLogoAziendale(clienteId, pic);
     }
 
+
+
    /* @GetMapping("/filter")
     public List<Cliente> clientiFilter(
             @RequestParam(required = false) Double minFatturato,
