@@ -80,11 +80,24 @@ public class FattureController {
         this.fatturaService.delete(fatturaId);
     }
 
-//    @GetMapping
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    public Page<Fattura> filtraFattureByClienteId(@RequestParam UUID clienteId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Pageable pageable) {
-//        Pageable pageable1 = PageRequest.of(page, size);
-//        return fatturaService.filtraFatturaByClienteId(clienteId, pageable);
-//    }
+    @GetMapping("/cliente")
+    public List<Fattura> filtraPerCliente(@RequestParam UUID clienteId) {
+        return fatturaService.getFattureByClienteId(clienteId);
+    }
+
+    @GetMapping("/statoFatture")
+    public List<Fattura> filtraPerStato(@RequestParam StatoFattura statoFatture) {
+        return fatturaService.getFattureByStato(statoFatture);
+    }
+
+    @GetMapping("/anno")
+    public List<Fattura> filtraFatturePerAnno(@RequestParam int anno) {
+        return fatturaService.getFatturaByAnno(anno);
+    }
+
+    @GetMapping("/importo")
+    public List<Fattura> filtrapFatturePerImporto(@RequestParam double minimoImporto, @RequestParam double massimoImporto) {
+        return fatturaService.findByImporto(minimoImporto, massimoImporto);
+    }
 
 }

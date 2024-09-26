@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public record ClientiPayloadDTO(
 
         @NotEmpty(message = "La ragione sociale è obbligatoria")
-        @Size(min = 2, max = 6, message = "La ragione sociale deve essere compresa tra 2 e 6 caratteri")
+
         String ragioneSociale,
 
         @NotEmpty(message = "La partita IVA è obbligatoria")
@@ -21,8 +21,6 @@ public record ClientiPayloadDTO(
         @NotNull(message = "La data dell'ultimo contatto non può essere null")
         LocalDate dataUltimoContatto,
 
-        @NotNull(message = "Il fatturato annuale è obbligatorio")
-        double fatturatoAnnuale,
 
         @NotEmpty(message = "La pec è obbligatoria")
         String pec,

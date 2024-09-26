@@ -5,6 +5,7 @@ import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiResponseDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.UpdateClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,15 +32,15 @@ public class ClienteController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id")String sortby) {
+    public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortby) {
         return clienteService.trovaTuttiClienti(page, size, sortby);
     }
 
     @GetMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Cliente findById(@PathVariable UUID clienteId){
+    public Cliente findById(@PathVariable UUID clienteId) {
         Cliente found = this.clienteService.trovaClienteById(clienteId);
-        if (found == null )throw new NotFoundException(clienteId);
+        if (found == null) throw new NotFoundException(clienteId);
         return found;
     }
 
@@ -43,14 +48,25 @@ public class ClienteController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientiResponseDTO createCliente(@RequestBody @Validated ClientiPayloadDTO body, BindingResult validationResult) {
-        if (validationResult.hasErrors()){
+        if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
                     .collect(Collectors.joining(". "));
 
             throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
-        }else{
+        } else {
             return new ClientiResponseDTO(this.clienteService.salvaCliente(body).getId());
+        }
+    }
+
+    @PutMapping("/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody @Validated UpdateClientiPayloadDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String message = validationResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(". "));
+            throw new BadRequestException("Ci sono errori con il payload " + message);
+        } else {
+            return this.clienteService.findByIdAndUpdate(clienteId, body);
         }
     }
 
@@ -61,6 +77,46 @@ public class ClienteController {
         this.clienteService.cancellaClienteById(id);
     }
 
+    @PatchMapping("/{clienteId}/pic")
+    public Cliente uploadAvatarPic(@PathVariable UUID clienteId, @RequestParam("pic") MultipartFile pic) throws IOException {
+        return this.clienteService.uploadLogoAziendale(clienteId, pic);
+    }
 
+
+
+   /* @GetMapping("/filter")
+    public List<Cliente> clientiFilter(
+            @RequestParam(required = false) Double minFatturato,
+            @RequestParam(required = false) Double maxFatturato,
+            @RequestParam(required = false) LocalDate inizioDataInserimento,
+            @RequestParam(required = false) LocalDate fineDataInserimento,
+            @RequestParam(required = false) LocalDate inizioDataContatto,
+            @RequestParam(required = false) LocalDate fineDataContatto,
+            @RequestParam(required = false) String parteNome) {
+
+        return this.clienteService.findByFilters(minFatturato, maxFatturato, inizioDataInserimento, fineDataInserimento,
+                inizioDataContatto, fineDataContatto, parteNome);
+    }*/
+
+    //*************** FILTRI *****************
+    @GetMapping("/filterNome")
+    public List<Cliente> filterByNome(@RequestParam String nome) {
+        return this.clienteService.findByParteDelNome(nome);
+    }
+
+    @GetMapping("/filterFatturato")
+    public List<Cliente> filterByFatturato(@RequestParam double minFatturato, @RequestParam double maxFatturato) {
+        return this.clienteService.findByFatturatoAnnuale(minFatturato, maxFatturato);
+    }
+
+    @GetMapping("/filterDataInserimento")
+    public List<Cliente> filterByDataInserimento(@RequestParam LocalDate inizioData, @RequestParam LocalDate fineData) {
+        return this.clienteService.findByDataInserimento(inizioData, fineData);
+    }
+
+    @GetMapping("/filterDataUltimoContatto")
+    public List<Cliente> filterByDataUltimoContatto(@RequestParam LocalDate inizioData, @RequestParam LocalDate fineData) {
+        return this.clienteService.findByDataUltimoContatto(inizioData, fineData);
+    }
 }
 

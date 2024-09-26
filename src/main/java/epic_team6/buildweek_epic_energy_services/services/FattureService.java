@@ -7,6 +7,7 @@ import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.FattureRespDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.NewFatturaDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.UpdateStatoFatturaDTO;
+import epic_team6.buildweek_epic_energy_services.repositories.ClientiRepository;
 import epic_team6.buildweek_epic_energy_services.repositories.FattureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,6 +26,8 @@ public class FattureService {
     private FattureRepository fatturaRepository;
     @Autowired
     private ClientiService clienteService;
+    @Autowired
+    private ClientiRepository clientiRepository;
 
     //FIND ALL CON PAGINAZIONE
     public Page<FattureRespDTO> findAll(int page, int size, String sortBy) {
@@ -60,8 +65,10 @@ public class FattureService {
     public FattureRespDTO save(NewFatturaDTO body) {
         Cliente foundCliente = this.clienteService.trovaClienteById(UUID.fromString(body.clienteId()));
         Fattura newFattura = new Fattura(body.dataFattura(), body.importo(), foundCliente);
+        foundCliente.setFatturatoAnnuale(foundCliente.getFatturatoAnnuale() + body.importo());
 
         this.fatturaRepository.save(newFattura);
+        this.clientiRepository.save(foundCliente);
         FattureRespDTO resp = new FattureRespDTO(newFattura.getId(), body.dataFattura(), body.importo(), newFattura.getNumeroFattura(), newFattura.getStatoFattura(), body.clienteId());
         return resp;
     }
@@ -99,6 +106,31 @@ public class FattureService {
 
         this.fatturaRepository.delete(found);
     }
+
+    public List<Fattura> getFattureByClienteId(UUID clienteId) {
+        List<Fattura> fatture = fatturaRepository.findFattureByClienteId(clienteId);
+        System.out.println("Fatture trovate " + fatture.size());
+        return fatture;
+    }
+
+    public List<Fattura> getFattureByStato(StatoFattura statoFattura) {
+        return fatturaRepository.findFattureByStatoFattura(statoFattura);
+    }
+
+    public List<Fattura> getFatturaByDataFattura(LocalDate dataFattura) {
+        return fatturaRepository.findFattureBydataFattura(dataFattura);
+    }
+
+    public List<Fattura> getFatturaByAnno(int anno) {
+        LocalDate startDate = LocalDate.of(anno, 1, 1);
+        LocalDate endDate = LocalDate.of(anno, 12, 31);
+        return fatturaRepository.findByDataFatturaBetween(startDate, endDate);
+    }
+
+    public List<Fattura> findByImporto(double minimoImporto, double massimoImporto) {
+        return fatturaRepository.findByImporto(minimoImporto, massimoImporto);
+    }
+
 
     public Page<Fattura> filtraFatturaByClienteId(UUID clienteId, Pageable pageable) {
         if (clienteId == null) throw new NotFoundException(clienteId);

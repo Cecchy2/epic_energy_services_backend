@@ -1,7 +1,8 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import epic_team6.buildweek_epic_energy_services.entities.Utente;
-import epic_team6.buildweek_epic_energy_services.enums.RuoloUtente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.UtentiPayloadDTO;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -25,6 +28,8 @@ public class UtentiService {
     private PasswordEncoder bcrypt;
     @Autowired
     private MailgunSender mailgunSender;
+    @Autowired
+    private Cloudinary cloudinary;
 
 
     public Page<Utente> findAll(int page, int size, String sortBy) {
@@ -64,11 +69,9 @@ public class UtentiService {
     }
 
     public void sendEmailAsAdmin(UUID userId, String emailSubject, String emailContent) {
-        Utente admin = utenteRepository.findById(userId).orElseThrow(() -> new NotFoundException("Admin non trovato"));
-        if (admin.getRuolo() != RuoloUtente.ADMIN) {
-            throw new SecurityException("Operazione non autorizzata. Solo gli amministratori possono inviare email.");
-        }
-        mailgunSender.sendMailByAdmin(admin.getEmail(), emailSubject, emailContent);
+        Utente userFound = utenteRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+
+        mailgunSender.sendMailByAdmin(userFound.getEmail(), emailSubject, emailContent);
     }
 
     public void findByIdAndDeleteUtente(UUID utenteId) {
@@ -79,5 +82,16 @@ public class UtentiService {
 
     public Utente findByEmail(String email) {
         return this.utenteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
+    }
+
+    public Utente uploadAvatarPic(UUID utenteId, MultipartFile pic) throws IOException {
+        Utente found = this.findUtenteById(utenteId);
+
+
+        String url = (String) cloudinary.uploader().upload(pic.getBytes(), ObjectUtils.emptyMap()).get("url");
+        System.out.println("URL: " + url);
+
+        found.setAvatar(url);
+        return this.utenteRepository.save(found);
     }
 }
