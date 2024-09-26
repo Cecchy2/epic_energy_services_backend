@@ -1,10 +1,12 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
+import epic_team6.buildweek_epic_energy_services.entities.Utente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiResponseDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,6 +57,16 @@ public class ClienteController {
             return new ClientiResponseDTO(this.clienteService.salvaCliente(body).getId());
         }
     }
+    @PutMapping("/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody @Validated ClientiPayloadDTO body, BindingResult validationResult){
+        if (validationResult.hasErrors()){
+            String message = validationResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(". "));
+            throw new BadRequestException("Ci sono errori con il payload " + message);
+        }else {
+            return this.clienteService.findByIdAndUpdate(clienteId,body);
+        }
+    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -62,20 +74,6 @@ public class ClienteController {
     public void deleteCliente(@PathVariable UUID id) {
         this.clienteService.cancellaClienteById(id);
     }
-
-   /* @GetMapping("/filter")
-    public List<Cliente> clientiFilter(
-            @RequestParam(required = false) Double minFatturato,
-            @RequestParam(required = false) Double maxFatturato,
-            @RequestParam(required = false) LocalDate inizioDataInserimento,
-            @RequestParam(required = false) LocalDate fineDataInserimento,
-            @RequestParam(required = false) LocalDate inizioDataContatto,
-            @RequestParam(required = false) LocalDate fineDataContatto,
-            @RequestParam(required = false) String parteNome) {
-
-        return this.clienteService.findByFilters(minFatturato, maxFatturato, inizioDataInserimento, fineDataInserimento,
-                inizioDataContatto, fineDataContatto, parteNome);
-    }*/
 
     //*************** FILTRI *****************
     @GetMapping("/filterNome")

@@ -1,5 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
+import epic_team6.buildweek_epic_energy_services.entities.Utente;
+import epic_team6.buildweek_epic_energy_services.enums.RuoloUtente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.payloads.UtenteLoginDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.UtenteLoginResponseDTO;
@@ -26,7 +28,9 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public UtenteLoginResponseDTO login(@RequestBody UtenteLoginDTO body){
-        return new UtenteLoginResponseDTO(this.authorizationsService.checkCredenzialiEGeneraToken(body));
+        Utente found = this.utentiService.findByEmail(body.email());
+        RuoloUtente role= found.getRuolo();
+        return new UtenteLoginResponseDTO(this.authorizationsService.checkCredenzialiEGeneraToken(body),role);
     }
 
     @PostMapping("/register")

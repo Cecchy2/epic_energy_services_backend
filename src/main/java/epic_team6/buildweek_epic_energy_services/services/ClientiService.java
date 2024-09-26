@@ -1,10 +1,12 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
+import epic_team6.buildweek_epic_energy_services.entities.Cliente;
 import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.UtentiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.ClientiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,29 @@ public class ClientiService {
                 body.indirizzoSedeOperativa());
 
         return clienteRepository.save(cliente);
+    }
+
+    public Cliente findByIdAndUpdate(UUID clienteId, ClientiPayloadDTO body) {
+
+        Cliente found = this.clienteRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
+        if (found == null) throw new NotFoundException(clienteId);
+        found.setRagioneSociale(body.ragioneSociale());
+        found.setPartitaIva(body.partitaIva());
+        found.setEmail(body.email());
+        found.setDataUltimoContatto(body.dataUltimoContatto());
+        found.setFatturatoAnnuale(body.fatturatoAnnuale());
+        found.setPec(body.pec());
+        found.setTelefono(body.telefono());
+        found.setEmailContatto(body.emailContatto());
+        found.setNomeContatto(body.nomeContatto());
+        found.setCognomeContatto(body.cognomeContatto());
+        found.setTelefonoContatto(body.telefonoContatto());
+        found.setTipologia(TipologiaCliente.valueOf(body.tipologia()));
+        found.setIndirizzoSedeLegale_id(body.indirizzoSedeLegale());
+        found.setIndirizzoSedeOperativa_id(body.indirizzoSedeOperativa());
+
+
+        return clienteRepository.save(found);
     }
 
 
