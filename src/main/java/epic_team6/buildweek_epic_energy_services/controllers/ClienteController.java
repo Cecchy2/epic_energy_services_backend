@@ -1,12 +1,11 @@
 package epic_team6.buildweek_epic_energy_services.controllers;
 
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
-import epic_team6.buildweek_epic_energy_services.entities.Utente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiResponseDTO;
-import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.UpdateClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,14 +58,15 @@ public class ClienteController {
             return new ClientiResponseDTO(this.clienteService.salvaCliente(body).getId());
         }
     }
+
     @PutMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody @Validated ClientiPayloadDTO body, BindingResult validationResult){
-        if (validationResult.hasErrors()){
+    public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody @Validated UpdateClientiPayloadDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
             String message = validationResult.getAllErrors().stream().map(objectError -> objectError.getDefaultMessage()).collect(Collectors.joining(". "));
             throw new BadRequestException("Ci sono errori con il payload " + message);
-        }else {
-            return this.clienteService.findByIdAndUpdate(clienteId,body);
+        } else {
+            return this.clienteService.findByIdAndUpdate(clienteId, body);
         }
     }
 

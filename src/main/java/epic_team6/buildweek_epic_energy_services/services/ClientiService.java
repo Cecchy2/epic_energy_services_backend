@@ -1,6 +1,5 @@
 package epic_team6.buildweek_epic_energy_services.services;
 
-import epic_team6.buildweek_epic_energy_services.entities.Cliente;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
@@ -9,6 +8,7 @@ import epic_team6.buildweek_epic_energy_services.enums.TipologiaCliente;
 import epic_team6.buildweek_epic_energy_services.exceptions.BadRequestException;
 import epic_team6.buildweek_epic_energy_services.exceptions.NotFoundException;
 import epic_team6.buildweek_epic_energy_services.payloads.ClientiPayloadDTO;
+import epic_team6.buildweek_epic_energy_services.payloads.UpdateClientiPayloadDTO;
 import epic_team6.buildweek_epic_energy_services.repositories.ClientiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class ClientiService {
         Indirizzo sedeOperativa = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeOperativa()));
 
 
-        Cliente cliente = new Cliente(body.ragioneSociale(), body.partitaIva(), body.email(), LocalDate.now(), body.dataUltimoContatto(), body.fatturatoAnnuale(), body.pec(),
+        Cliente cliente = new Cliente(body.ragioneSociale(), body.partitaIva(), body.email(), LocalDate.now(), body.dataUltimoContatto(), 0, body.pec(),
                 body.telefono(), body.emailContatto(), body.nomeContatto(), body.cognomeContatto(), body.telefonoContatto(), "https://fastly.picsum.photos/id/848/200/300.jpg?hmac=cNClhUSP4IM6ZT6RTqdeCOLWYEJYBNXaqdflgf_EqD8",
                 TipologiaCliente.valueOf(body.tipologia()), sedeLegale, sedeOperativa);
 
@@ -49,7 +49,7 @@ public class ClientiService {
         return clienteRepository.save(cliente);
     }
 
-    public Cliente findByIdAndUpdate(UUID clienteId, ClientiPayloadDTO body) {
+    public Cliente findByIdAndUpdate(UUID clienteId, UpdateClientiPayloadDTO body) {
 
         Cliente found = this.clienteRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
         Indirizzo indirizzolegale = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeLegale()));

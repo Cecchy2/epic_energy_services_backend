@@ -21,8 +21,6 @@ public record ClientiPayloadDTO(
         @NotNull(message = "La data dell'ultimo contatto non può essere null")
         LocalDate dataUltimoContatto,
 
-        @NotNull(message = "Il fatturato annuale è obbligatorio")
-        double fatturatoAnnuale,
 
         @NotEmpty(message = "La pec è obbligatoria")
         String pec,
