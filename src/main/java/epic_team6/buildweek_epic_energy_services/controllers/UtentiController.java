@@ -35,7 +35,6 @@ public class UtentiController {
     }
 
     @GetMapping("/{utenteId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Utente findById(@PathVariable UUID utenteId) {
         Utente found = this.utenteService.findUtenteById(utenteId);
         if (found == null) throw new NotFoundException(utenteId);
