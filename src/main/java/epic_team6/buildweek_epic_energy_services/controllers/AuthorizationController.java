@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,7 +31,8 @@ public class AuthorizationController {
     public UtenteLoginResponseDTO login(@RequestBody UtenteLoginDTO body){
         Utente found = this.utentiService.findByEmail(body.email());
         RuoloUtente role= found.getRuolo();
-        return new UtenteLoginResponseDTO(this.authorizationsService.checkCredenzialiEGeneraToken(body),role);
+        UUID utenteId = found.getId();
+        return new UtenteLoginResponseDTO(this.authorizationsService.checkCredenzialiEGeneraToken(body),role, utenteId);
     }
 
     @PostMapping("/register")
