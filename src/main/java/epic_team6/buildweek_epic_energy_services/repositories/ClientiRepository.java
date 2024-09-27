@@ -1,6 +1,7 @@
 package epic_team6.buildweek_epic_energy_services.repositories;
 
 import epic_team6.buildweek_epic_energy_services.entities.Cliente;
+import epic_team6.buildweek_epic_energy_services.entities.Indirizzo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,10 @@ public interface ClientiRepository extends JpaRepository<Cliente, UUID> {
     boolean existsByEmail(String email);
 
     boolean existsByPartitaIva(String partitaIva);
+
+    boolean existsByIndirizzoSedeLegaleId(Indirizzo sedeLegale);
+
+    boolean existsByIndirizzoSedeOperativaId(Indirizzo sedeOperativa);
 
     /*@Query("SELECT c FROM Cliente c WHERE " +
             "(:minFatturato IS NULL OR c.fatturatoAnnuale >= :minFatturato) AND " +

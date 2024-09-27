@@ -38,11 +38,17 @@ public class ClientiService {
 
 
     public Cliente salvaCliente(ClientiPayloadDTO body) {
-        if (clienteRepository.existsByEmail(body.email()) || clienteRepository.existsByPartitaIva(body.partitaIva())) {
-            throw new BadRequestException("Il cliente è già registrato");
-        }
+
         Indirizzo sedeLegale = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeLegale()));
         Indirizzo sedeOperativa = this.indirizziService.findById(UUID.fromString(body.indirizzoSedeOperativa()));
+
+        if (clienteRepository.existsByEmail(body.email()) || clienteRepository.existsByPartitaIva(body.partitaIva())) {
+            throw new BadRequestException("Il cliente è già registrato");
+        } else if (clienteRepository.existsByIndirizzoSedeOperativaId(sedeOperativa)) {
+            throw new BadRequestException("Esiste già un cliente con l'indirizzo della sede operativa selezionato!");
+        } else if (clienteRepository.existsByIndirizzoSedeLegaleId(sedeLegale)) {
+            throw new BadRequestException("Esiste già un cliente con l'indirizzo della sede legale selezionato!");
+        }
 
 
         Cliente cliente = new Cliente(body.ragioneSociale(), body.partitaIva(), body.email(), LocalDate.now(), body.dataUltimoContatto(), 0, body.pec(),
@@ -71,8 +77,8 @@ public class ClientiService {
         found.setCognomeContatto(body.cognomeContatto());
         found.setTelefonoContatto(body.telefonoContatto());
         found.setTipologia(TipologiaCliente.valueOf(body.tipologia()));
-        found.setIndirizzoSedeLegale_id(indirizzolegale);
-        found.setIndirizzoSedeOperativa_id(indirizzoOperativa);
+        found.setIndirizzoSedeLegaleId(indirizzolegale);
+        found.setIndirizzoSedeOperativaId(indirizzoOperativa);
 
 
         return clienteRepository.save(found);
