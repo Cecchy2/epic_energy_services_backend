@@ -84,6 +84,7 @@ public class FattureService {
         return resp;
     }
 
+
     public FattureRespDTO updateStatoFatturaById(UUID fatturaId, UpdateStatoFatturaDTO body) {
         Fattura foundFattura = this.findById(fatturaId);
 

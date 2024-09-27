@@ -5,11 +5,11 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public record UpdateClientiPayloadDTO(@NotEmpty(message = "La ragione sociale è obbligatoria")
-                                      @Size(min = 2, max = 6, message = "La ragione sociale deve essere compresa tra 2 e 6 caratteri")
+
                                       String ragioneSociale,
 
                                       @NotEmpty(message = "La partita IVA è obbligatoria")
-                                      @Size(min = 11, max = 11, message = "La partita IVA deve essere composta da 11 caratteri")
+
                                       String partitaIva,
 
                                       @NotEmpty(message = "L'email è obbligatoria")
@@ -26,7 +26,7 @@ public record UpdateClientiPayloadDTO(@NotEmpty(message = "La ragione sociale è
                                       String pec,
 
                                       @NotEmpty(message = "Il telefono è obbligatorio")
-                                      @Size(min = 10, max = 15, message = "Il telefono deve essere compreso tra 10 e 15 cifre")
+
                                       String telefono,
 
                                       @Email(message = "L'email del contatto non è valida")
@@ -42,7 +42,7 @@ public record UpdateClientiPayloadDTO(@NotEmpty(message = "La ragione sociale è
                                       String cognomeContatto,
 
                                       @NotEmpty(message = "Il telefono del contatto è obbligatorio")
-                                      @Size(min = 10, max = 15, message = "Il telefono del contatto deve essere compreso tra 10 e 15 cifre")
+
                                       String telefonoContatto,
 
                                       @NotEmpty(message = "La tipologia è obbligatoria")
