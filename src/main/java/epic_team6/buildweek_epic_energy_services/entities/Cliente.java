@@ -42,10 +42,10 @@ public class Cliente {
     private TipologiaCliente tipologia;
     @OneToOne
     @JoinColumn(name = "indirizzo_sede_legale_id")
-    private Indirizzo indirizzoSedeLegale_id;
+    private Indirizzo indirizzoSedeLegaleId;
     @OneToOne
     @JoinColumn(name = "indirizzo_sede_operativa_id")
-    private Indirizzo indirizzoSedeOperativa_id;
+    private Indirizzo indirizzoSedeOperativaId;
 
     @OneToMany(mappedBy = "cliente")
 
@@ -67,7 +67,7 @@ public class Cliente {
         this.telefonoContatto = telefonoContatto;
         this.logoAziendale = logoAziendale;
         this.tipologia = tipologia;
-        this.indirizzoSedeLegale_id = indirizzoSedeLegale;
-        this.indirizzoSedeOperativa_id = indirizzoSedeOperativa;
+        this.indirizzoSedeLegaleId = indirizzoSedeLegale;
+        this.indirizzoSedeOperativaId = indirizzoSedeOperativa;
     }
 }
